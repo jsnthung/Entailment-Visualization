@@ -1,0 +1,22 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix fam: <http://example.org/family#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Define family properties and entailment rules
+fam:fatherOf rdfs:subPropertyOf fam:parentOf .
+fam:motherOf rdfs:subPropertyOf fam:parentOf .
+
+# Individuals
+_:alice a foaf:Person; foaf:name "Alice" .
+_:bob a foaf:Person; foaf:name "Bob" .
+_:charlie a foaf:Person; foaf:name "Charlie" .
+_:daisy a foaf:Person; foaf:name "Daisy" .
+_:ed a foaf:Person; foaf:name "Ed" .
+_:fiona a foaf:Person; foaf:name "Fiona" .
+
+# Family relationships
+_:bob fam:fatherOf _:alice .
+_:charlie fam:fatherOf _:daisy .
+_:ed fam:fatherOf _:fiona .
+_:alice fam:motherOf _:daisy .
+_:fiona fam:motherOf _:charlie .
