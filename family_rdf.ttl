@@ -6,7 +6,6 @@
 fam:fatherOf rdfs:subPropertyOf fam:parentOf .
 fam:motherOf rdfs:subPropertyOf fam:parentOf .
 
-
 # Individuals
 _:alice a foaf:Person; foaf:name "Alice" .
 _:bob a foaf:Person; foaf:name "Bob" .
