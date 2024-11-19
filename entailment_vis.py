@@ -1,15 +1,15 @@
 from rdflib import Graph, URIRef, Literal, BNode, Namespace
-from rdflib.namespace import NamespaceManager
+from rdflib.namespace import NamespaceManager, RDF, RDFS
 import kglab
 from pyvis.network import Network
 
 # Parse in .ttl file
+ttl_path = "family_rdf.ttl"
 g = Graph()
-g.parse("family_rdf.ttl", format='ttl')
+g.parse(ttl_path, format='ttl')
 # g.parse("EnDe-Lite50(without_Ontology).ttl", format='ttl')
-g.serialize(destination="rdfdata.ttl")
 
-kg = kglab.KnowledgeGraph().load_rdf("rdfdata.ttl")
+kg = kglab.KnowledgeGraph().load_rdf(ttl_path)
 
 # Create a pyvis Network for visualization
 pyvis_graph = Network(notebook=True, directed=True, width="100%", height="750px")
@@ -29,47 +29,24 @@ def get_label(term):
 
 
 # RDFS Entailment Engine
-rdfs = Namespace("http://www.w3.org/2000/01/rdf-schema#")
+# rdfs6
+# Get all subj of type rdf:property
+for subj, _, _ in g.triples((None, RDF.type, RDF.Property)):
+    g.add((subj, RDFS.subPropertyOf, subj))
 
-# RDFS7
-# Build a map of subproperties to their parent properties
-subproperty_map = {}
-for subprop, _, superprop in g.triples((None, rdfs.subPropertyOf, None)):
-    subproperty_map[subprop] = superprop
+# rdfs7
+for subprop, _, superprop in g.triples((None, RDFS.subPropertyOf, None)):
+    for subj, pred, obj in g:
+        if pred == subprop:
+            g.add((subj, superprop, obj))
 
-# Generate entailments based on subPropertyOf relationships
-new_triples = set()
-for subj, pred, obj in g:
-    # Check if the predicate has a superproperty
-    if pred in subproperty_map:
-        # Add a new triple for the inferred relationship
-        superpred = subproperty_map[pred]
-        new_triples.add((subj, superpred, obj))
+# rdfs9
+for subclass, _, superclass in g.triples((None, RDFS.subClassOf, None)):
+    for subj, pred, obj in g:
+        if obj == subclass:
+            g.add((subj, pred, superclass))
 
-# Add the new inferred triples to the graph
-for subj, superpred, obj in new_triples:
-    g.add((subj, superpred, obj))
-
-# RDFS9
-# Build a map of subclass to their parent class
-subclass_map = {}
-for subclass, _, superclass in g.triples((None, rdfs.subClassOf, None)):
-    subclass_map[subclass] = superclass
-
-# Generate entailments based on subClassOf relationships
-subclass_new_triples = set()
-for subj, pred, obj in g:
-    # Check if the object has a superclass
-    if obj in subclass_map:
-        # Add a new triple for the inferred relationship
-        superobj = subclass_map[obj]
-        subclass_new_triples.add((subj, pred, superobj))
-
-# Add the new inferred triples to the graph
-for subj, pred, superobj in subclass_new_triples:
-    g.add((subj, pred, superobj))
-
-# Adding nodes and edges
+# Adding nodes and edges in g for visualization
 for subj, pred, obj in g:
     subj_str = get_label(subj)
     obj_str = get_label(obj)
@@ -88,3 +65,5 @@ pyvis_graph.force_atlas_2based(gravity=-50, central_gravity=0.01, spring_length=
 # pyvis_graph.hrepulsion()
 # pyvis_graph.repulsion()
 pyvis_graph.show("graph_init.html")
+
+g.serialize(destination="rdfdata_entailed.ttl")
