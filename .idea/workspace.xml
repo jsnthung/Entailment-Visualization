@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82f3e557-118d-45e6-ad48-5752a721358a" name="Changes" comment="twst">
-      <change afterPath="$PROJECT_DIR$/entailment_vis.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entailment_vis_with_BNodes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/step_by_step_vis.html" afterDir="false" />
+    <list default="true" id="82f3e557-118d-45e6-ad48-5752a721358a" name="Changes" comment="stand-up presentation update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Untitled1.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/family_rdf.ttl" beforeDir="false" afterPath="$PROJECT_DIR$/family_rdf.ttl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entailment_vis.py" beforeDir="false" afterPath="$PROJECT_DIR$/entailment_vis.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +42,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "9b32b5f8",
+    "git-widget-placeholder": "entailment__engine",
     "last_opened_file_path": "/Users/jasonthung/pyvis_test",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -75,12 +71,25 @@
       <option name="presentableId" value="Default" />
       <updated>1730451176911</updated>
       <workItem from="1730451177952" duration="15000" />
-      <workItem from="1732021701700" duration="2013000" />
+      <workItem from="1732021701700" duration="3420000" />
     </task>
+    <task id="LOCAL-00001" summary="stand-up presentation update">
+      <option name="closed" value="true" />
+      <created>1732023941671</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732023941671</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="stand-up presentation update" />
+    <option name="LAST_COMMIT_MESSAGE" value="stand-up presentation update" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -97,5 +106,8 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/pyvis_test$entailment_vis.coverage" NAME="entailment_vis Coverage Results" MODIFIED="1732023804051" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
