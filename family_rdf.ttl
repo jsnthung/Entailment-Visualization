@@ -1,22 +1,26 @@
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix fam: <http://example.org/family#> .
+@prefix ex: <http://example.org/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 # Define family properties and entailment rules
 fam:fatherOf rdfs:subPropertyOf fam:parentOf .
 fam:motherOf rdfs:subPropertyOf fam:parentOf .
 
+# Define Person as subClassOf Mammal
+foaf:Person rdfs:subClassOf ex:mammal .
+
 # Individuals
-_:alice a foaf:Person; foaf:name "Alice" .
-_:bob a foaf:Person; foaf:name "Bob" .
-_:charlie a foaf:Person; foaf:name "Charlie" .
-_:daisy a foaf:Person; foaf:name "Daisy" .
-_:ed a foaf:Person; foaf:name "Ed" .
-_:fiona a foaf:Person; foaf:name "Fiona" .
+ex:alice a foaf:Person; foaf:name "Alice" .
+ex:bob a foaf:Person; foaf:name "Bob" .
+ex:charlie a foaf:Person; foaf:name "Charlie" .
+ex:daisy a foaf:Person; foaf:name "Daisy" .
+ex:ed a foaf:Person; foaf:name "Ed" .
+ex:fiona a foaf:Person; foaf:name "Fiona" .
 
 # Family relationships
-_:bob fam:fatherOf _:alice .
-_:charlie fam:fatherOf _:daisy .
-_:ed fam:fatherOf _:fiona .
-_:alice fam:motherOf _:daisy .
-_:fiona fam:motherOf _:charlie .
+ex:bob fam:fatherOf ex:alice .
+ex:charlie fam:fatherOf ex:daisy .
+ex:ed fam:fatherOf ex:fiona .
+ex:alice fam:motherOf ex:daisy .
+ex:fiona fam:motherOf ex:charlie .

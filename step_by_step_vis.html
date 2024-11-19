@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+</head>
+
+<body>
+    <center><h1>Step-by-Step Visualization Demo</h1></center>
+
+    <div class="container">
+        <div id="mynetwork" style="width: 100%; height: 600px; border: 1px solid lightgray;"></div>
+        <div class="mt-3">
+            <button class="btn btn-primary" onclick="previousAction()">Previous</button>
+            <button class="btn btn-primary" onclick="nextAction()">Next</button>
+        </div>
+        <div id="action-info" class="mt-2">Current Action: None</div>
+    </div>
+
+    <script type="text/javascript">
+        var nodes, edges, network;
+        var actionIndex = -1;  // To keep track of the current action
+        var nodeColors = {};   // Original colors for undo purposes
+        var edgeColors = {};   // Original edge colors for undo purposes
+
+        // Define the list of actions
+        var actions = [
+            { type: "addEdge", from: "Ed", to: "Fiona", label: "fatherOf" },
+            { type: "changeNodeColor", nodeId: "Daisy", color: "#000000" },
+            { type: "addEdge", from: "Bob", to: "Alice", label: "parentOf" },
+            { type: "changeEdgeColor", from: "Charlie", to: "Daisy", label: "fatherOf", color: "#0000ff" }
+        ];
+
+        // Draw the initial graph
+        function drawGraph() {
+            var container = document.getElementById('mynetwork');
+
+            // Parse nodes and edges data
+            nodes = new vis.DataSet([
+                {id: 'Alice', label: 'Alice', color: '#97c2fc'},
+                {id: 'Bob', label: 'Bob', color: '#97c2fc'},
+                {id: 'Charlie', label: 'Charlie', color: '#97c2fc'},
+                {id: 'Daisy', label: 'Daisy', color: '#97c2fc'},
+                {id: 'Ed', label: 'Ed', color: '#97c2fc'},
+                {id: 'Fiona', label: 'Fiona', color: '#97c2fc'}
+            ]);
+
+            edges = new vis.DataSet([
+                {id: 'Bob-Alice-fatherOf', from: 'Bob', to: 'Alice', label: 'fatherOf', arrows: 'to', color: {color: '#848484'}},
+                {id: 'Charlie-Daisy-fatherOf', from: 'Charlie', to: 'Daisy', label: 'fatherOf', arrows: 'to', color: {color: '#848484'}}
+            ]);
+
+            // Save initial colors for undo functionality
+            var allNodes = nodes.get({ returnType: "Object" });
+            for (var nodeId in allNodes) {
+                nodeColors[nodeId] = allNodes[nodeId].color;
+            }
+
+            var allEdges = edges.get({ returnType: "Object" });
+            for (var edgeId in allEdges) {
+                edgeColors[edgeId] = allEdges[edgeId].color.color;
+            }
+
+            var data = {nodes: nodes, edges: edges};
+            var options = {nodes: {shape: 'dot', size: 15}, edges: {smooth: true, arrows: {to: true}}, physics: {enabled: true}};
+
+            network = new vis.Network(container, data, options);
+        }
+
+        // Function to apply the next action
+        function nextAction() {
+            if (actionIndex < actions.length - 1) {
+                actionIndex++;
+                var action = actions[actionIndex];
+                applyAction(action);
+                updateActionInfo(actionIndex);
+            } else {
+                alert("Entailment complete");
+            }
+        }
+
+        // Function to undo the previous action
+        function previousAction() {
+            if (actionIndex >= 0) {
+                var action = actions[actionIndex];
+                undoAction(action);
+                actionIndex--;
+                updateActionInfo(actionIndex);
+            } else {
+                alert("This is the initial graph");
+            }
+        }
+
+        // Function to apply an action based on its type
+        function applyAction(action) {
+            if (action.type === "addEdge") {
+                const edgeId = `${action.from}-${action.to}-${action.label}`;
+                edges.add({
+                    id: edgeId,
+                    from: action.from,
+                    to: action.to,
+                    label: action.label,
+                    arrows: 'to',
+                    color: {color: '#848484'}
+                });
+            } else if (action.type === "changeNodeColor") {
+                nodes.update({id: action.nodeId, color: action.color});
+            } else if (action.type === "changeEdgeColor") {
+                const edgeId = `${action.from}-${action.to}-${action.label}`;
+                edgeColors[edgeId] = edges.get(edgeId).color.color; // Save original color
+                edges.update({id: edgeId, color: {color: action.color}});
+            }
+        }
+
+        // Function to undo an action based on its type
+        function undoAction(action) {
+            if (action.type === "addEdge") {
+                const edgeId = `${action.from}-${action.to}-${action.label}`;
+                edges.remove({id: edgeId});
+            } else if (action.type === "changeNodeColor") {
+                nodes.update({id: action.nodeId, color: nodeColors[action.nodeId]});
+            } else if (action.type === "changeEdgeColor") {
+                const edgeId = `${action.from}-${action.to}-${action.label}`;
+                edges.update({id: edgeId, color: {color: edgeColors[edgeId]}});
+            }
+        }
+
+        // Update action info display
+        function updateActionInfo(index) {
+            var actionText = index >= 0 ? `Current Action: ${actions[index].type} on ${actions[index].nodeId || actions[index].from + " to " + actions[index].to}` : "None";
+            document.getElementById("action-info").innerText = actionText;
+        }
+
+        // Draw the graph on page load
+        drawGraph();
+    </script>
+</body>
+</html>
