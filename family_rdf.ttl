@@ -4,40 +4,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-# Define family properties and entailment rules
-fam:fatherOf rdfs:subPropertyOf fam:parentOf .
-fam:motherOf rdfs:subPropertyOf fam:parentOf .
 
-# Define Person as subClassOf Mammal
-foaf:Person rdfs:subClassOf ex:mammal .
-
-# Individuals
-ex:alice a foaf:Person; foaf:name "Alice" .
-ex:bob a foaf:Person; foaf:name "Bob" .
-ex:charlie a foaf:Person; foaf:name "Charlie" .
-ex:daisy a foaf:Person; foaf:name "Daisy" .
-ex:ed a foaf:Person; foaf:name "Ed" .
-ex:fiona a foaf:Person; foaf:name "Fiona" .
-
-# Family relationships
-ex:bob fam:fatherOf ex:alice .
-ex:charlie fam:fatherOf ex:daisy .
-ex:ed fam:fatherOf ex:fiona .
-ex:alice fam:motherOf ex:daisy .
-ex:fiona fam:motherOf ex:charlie .
-
-# rdfs6
-ex:jason a rdf:Property .
-
-# rdfs8 + rdfs10
-ex:thung a rdfs:Class .
-
-# rdfs11
-"Blue Ringed Octopus" rdfs:subClassOf "Octopus" .
-"Octopus" rdfs:subClassOf "Marine Animal" .
-
-# rdfs12
-"rdfs12 Test" a rdfs:ContainerMembershipProperty .
-
-# rdfs13
-"My Data" a rdfs:Datatype .
+# rdfs5
+ex:running rdfs:subPropertyOf ex:exercise .
+ex:exercise rdfs:subPropertyOf ex:action .

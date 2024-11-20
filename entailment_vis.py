@@ -1,6 +1,5 @@
 from rdflib import Graph, URIRef, Literal, BNode, Namespace
 from rdflib.namespace import NamespaceManager, RDF, RDFS
-import kglab
 from pyvis.network import Network
 
 # Parse in .ttl file
@@ -8,8 +7,6 @@ ttl_path = "family_rdf.ttl"
 g = Graph()
 g.parse(ttl_path, format='ttl')
 # g.parse("EnDe-Lite50(without_Ontology).ttl", format='ttl')
-
-# kg = kglab.KnowledgeGraph().load_rdf(ttl_path)
 
 # Create a pyvis Network for visualization
 pyvis_graph = Network(notebook=True, directed=True, width="100%", height="750px")
@@ -29,6 +26,34 @@ def get_label(term):
 
 
 # RDFS Entailment Engine
+# rdfs1
+for subj, pred, obj in g.triples((None, None, None)):
+    if obj == RDFS.Datatype:
+        g.add((subj, RDF.type, RDFS.Datatype))
+
+# rdfs2
+for prop, _, domain in g.triples((None, RDFS.domain, None)):
+    for subj, pred, obj in g.triples((None, prop, None)):
+        g.add((subj, RDF.type, domain))
+
+# rdfs3
+for prop, _, range_ in g.triples((None, RDFS.range, None)):
+    for subj, pred, obj in g.triples((None, prop, None)):
+        g.add((obj, RDF.type, range_))
+
+# rdfs4a: Subjects of triples are resources
+for subj, pred, obj in g.triples((None, None, None)):
+    g.add((subj, RDF.type, RDFS.Resource))
+
+# rdfs4b: Objects of triples are resources
+for subj, pred, obj in g.triples((None, None, None)):
+    g.add((obj, RDF.type, RDFS.Resource))
+
+# rdfs5
+for p1, _, p2 in g.triples((None, RDFS.subPropertyOf, None)):
+    for _, _, p3 in g.triples((p2, RDFS.subPropertyOf, None)):
+        g.add((p1, RDFS.subPropertyOf, p3))
+
 # rdfs6
 for subj, _, _ in g.triples((None, RDF.type, RDF.Property)):
     g.add((subj, RDFS.subPropertyOf, subj))
