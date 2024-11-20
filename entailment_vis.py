@@ -9,7 +9,7 @@ g = Graph()
 g.parse(ttl_path, format='ttl')
 # g.parse("EnDe-Lite50(without_Ontology).ttl", format='ttl')
 
-kg = kglab.KnowledgeGraph().load_rdf(ttl_path)
+# kg = kglab.KnowledgeGraph().load_rdf(ttl_path)
 
 # Create a pyvis Network for visualization
 pyvis_graph = Network(notebook=True, directed=True, width="100%", height="750px")
@@ -30,21 +30,36 @@ def get_label(term):
 
 # RDFS Entailment Engine
 # rdfs6
-# Get all subj of type rdf:property
 for subj, _, _ in g.triples((None, RDF.type, RDF.Property)):
     g.add((subj, RDFS.subPropertyOf, subj))
 
 # rdfs7
 for subprop, _, superprop in g.triples((None, RDFS.subPropertyOf, None)):
-    for subj, pred, obj in g:
-        if pred == subprop:
-            g.add((subj, superprop, obj))
+    for subj, _, obj in g.triples((None, subprop, None)):
+        g.add((subj, superprop, obj))
+
+# rdfs8 + rdfs10
+for subj, _, _ in g.triples((None, RDF.type, RDFS.Class)):
+    g.add((subj, RDFS.subClassOf, RDFS.Resource)) # rdfs8
+    g.add((subj, RDFS.subClassOf, subj)) # rdfs10
 
 # rdfs9
 for subclass, _, superclass in g.triples((None, RDFS.subClassOf, None)):
-    for subj, pred, obj in g:
-        if obj == subclass:
-            g.add((subj, pred, superclass))
+    for subj, _, _ in g.triples((None, RDF.type, subclass)):
+        g.add((subj, RDF.type, superclass))
+
+# rdfs11
+for subj, _, obj in g.triples((None, RDFS.subClassOf, None)):
+    for _, _, obj2 in g.triples((obj, RDFS.subClassOf, None)):
+        g.add((subj, RDFS.subClassOf, obj2))
+
+# rdfs12
+for subj, _, _ in g.triples((None, RDF.type, RDFS.ContainerMembershipProperty)):
+    g.add((subj, RDFS.subPropertyOf, RDFS.member))
+
+# rdfs13
+for subj, _, _ in g.triples((None, RDF.type, RDFS.Datatype)):
+    g.add((subj, RDFS.subClassOf, RDFS.Literal))
 
 # Adding nodes and edges in g for visualization
 for subj, pred, obj in g:
