@@ -1,0 +1,622 @@
+[
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:bob",
+                "predicate": "fam:fatherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:bob",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:charlie",
+                "predicate": "fam:fatherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:charlie",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:ed",
+                "predicate": "fam:fatherOf",
+                "object": "ex:fiona"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:ed",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:alice",
+                "predicate": "fam:motherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:alice",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:charlie"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:hannah",
+                "predicate": "fam:motherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:hannah",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs2",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:domain",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:gary"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:bob",
+                "predicate": "fam:fatherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:alice",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:charlie",
+                "predicate": "fam:fatherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:daisy",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:ed",
+                "predicate": "fam:fatherOf",
+                "object": "ex:fiona"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:alice",
+                "predicate": "fam:motherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:daisy",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:charlie"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:charlie",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:hannah",
+                "predicate": "fam:motherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:alice",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs3",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:range",
+                "object": "foaf:Person"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:gary"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:gary",
+            "predicate": "rdf:type",
+            "object": "foaf:Person"
+        }
+    },
+    {
+        "rule": "rdfs5",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "fam:parentOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:ancestorOf"
+            }
+        ],
+        "inferred": {
+            "subject": "fam:fatherOf",
+            "predicate": "rdfs:subPropertyOf",
+            "object": "fam:ancestorOf"
+        }
+    },
+    {
+        "rule": "rdfs5",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "fam:parentOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:ancestorOf"
+            }
+        ],
+        "inferred": {
+            "subject": "fam:motherOf",
+            "predicate": "rdfs:subPropertyOf",
+            "object": "fam:ancestorOf"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:bob",
+                "predicate": "fam:fatherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:bob",
+            "predicate": "fam:parentOf",
+            "object": "ex:alice"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:charlie",
+                "predicate": "fam:fatherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:charlie",
+            "predicate": "fam:parentOf",
+            "object": "ex:daisy"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:fatherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:ed",
+                "predicate": "fam:fatherOf",
+                "object": "ex:fiona"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:ed",
+            "predicate": "fam:parentOf",
+            "object": "ex:fiona"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:alice",
+                "predicate": "fam:motherOf",
+                "object": "ex:daisy"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:alice",
+            "predicate": "fam:parentOf",
+            "object": "ex:daisy"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:charlie"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "fam:parentOf",
+            "object": "ex:charlie"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:hannah",
+                "predicate": "fam:motherOf",
+                "object": "ex:alice"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:hannah",
+            "predicate": "fam:parentOf",
+            "object": "ex:alice"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "fam:motherOf",
+                "predicate": "rdfs:subPropertyOf",
+                "object": "fam:parentOf"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "fam:motherOf",
+                "object": "ex:gary"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "fam:parentOf",
+            "object": "ex:gary"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "ex:Audi",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Car"
+            },
+            {
+                "subject": "ex:R8",
+                "predicate": "rdf:type",
+                "object": "ex:Audi"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:R8",
+            "predicate": "rdf:type",
+            "object": "ex:Car"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:alice",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:alice",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:bob",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:bob",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:charlie",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:charlie",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:daisy",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:daisy",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:ed",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:ed",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:fiona",
+                "predicate": "rdf:type",
+                "object": "foaf:Person"
+            }
+        ],
+        "inferred": {
+            "subject": "ex:fiona",
+            "predicate": "rdf:type",
+            "object": "ex:Mammal"
+        }
+    },
+    {
+        "rule": "rdfs7",
+        "condition": [
+            {
+                "subject": "foaf:Person",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Mammal"
+            },
+            {
+                "subject": "ex:Mammal",
+                "predicate": "rdfs:subClassOf",
+                "object": "ex:Animal"
+            }
+        ],
+        "inferred": {
+            "subject": "foaf:Person",
+            "predicate": "rdfs:subClassOf",
+            "object": "ex:Animal"
+        }
+    }
+]

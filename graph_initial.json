@@ -1,0 +1,17 @@
+[
+    {
+        "subject": "ex:bob",
+        "predicate": "rdf:type",
+        "object": "ex:Person"
+    },
+    {
+        "subject": "ex:alice",
+        "predicate": "rdf:type",
+        "object": "ex:Person"
+    },
+    {
+        "subject": "ex:alice",
+        "predicate": "rdf:type",
+        "object": "ex:mammal"
+    }
+]

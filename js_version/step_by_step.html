@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js Directed Graph</title>
+    <script src="https://unpkg.com/n3/browser/n3.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Left-side text container */
+        .text-container {
+            width: 300px; /* Adjust the width as needed */
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            height: 100vh;
+            position: fixed; /* Fix on the left side */
+        }
+
+        /* SVG container for the graph */
+        svg {
+            display: block;
+            flex-grow: 1;
+            margin-left: 300px; /* Space for the left-side container */
+        }
+
+        .link {
+            fill: none;
+            stroke: #2cb81d;
+            stroke-opacity: 0.6;
+            stroke-width: 1.5px;
+        }
+
+        .node circle {
+            fill: #1f78b4;
+            stroke: #fff;
+            stroke-width: 1px;
+        }
+
+        .node text {
+            font: 12px sans-serif;
+            pointer-events: none;
+        }
+
+        .link-label {
+            font: 10px sans-serif;
+            fill: #000;
+            text-anchor: middle;
+        }
+
+        /* Add button styling */
+        button {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="text-container">
+    <h2>Graph Information</h2>
+    <p>Here you can add some descriptive text or additional information related to the graph.</p>
+    <p>Use this space to explain the data or the visualization.</p>
+    <!--    Button to add a new edge -->
+    <button id="add-edge-button">Add Edge: ex:bob -> ex:mammal</button>
+    <!--    Button to remove an edge-->
+    <button id="remove-edge-button">Remove Edge: ex:bob -> ex:mammal</button>
+    <!--    Button to change color-->
+    <button id="change-node-color-button">Change Node Color</button>
+    <!--    Button to change edge color-->
+    <button id="change-edge-color-button">Change Edge Color</button>
+    <h2>Select a Turtle (.ttl) file to parse</h2>
+    <input type="file" id="fileInput" accept=".ttl" />
+    <button id="log">Log</button>
+    <button id="full-entailment">Full Entailment</button>
+    <button id="reduced-entailment">Reduced Entailment</button>
+
+    <button id="add-marker-end">Add Marker End</button>
+    <button id="style-marker-end">Style Marker End</button>
+</div>
+
+<script src="graph.js"></script>
+<script src="entailment_engine.js"></script>
+</body>
+
+</html>

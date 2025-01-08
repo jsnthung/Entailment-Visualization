@@ -1,0 +1,45 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix fam: <http://example.org/family#> .
+@prefix ex: <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Individuals
+ex:alice a foaf:Person; foaf:name "Alice" .
+ex:bob a foaf:Person; foaf:name "Bob" .
+ex:charlie a foaf:Person; foaf:name "Charlie" .
+ex:daisy a foaf:Person; foaf:name "Daisy" .
+ex:ed a foaf:Person; foaf:name "Ed" .
+ex:fiona a foaf:Person; foaf:name "Fiona" .
+
+# Family relationships
+ex:bob fam:fatherOf ex:alice .
+ex:charlie fam:fatherOf ex:daisy .
+ex:ed fam:fatherOf ex:fiona .
+ex:alice fam:motherOf ex:daisy .
+ex:fiona fam:motherOf ex:charlie .
+
+# rdfs2
+fam:fatherOf rdfs:domain foaf:Person .
+fam:motherOf rdfs:domain foaf:Person .
+ex:hannah fam:motherOf ex:alice .
+
+# rdfs3
+fam:fatherOf rdfs:range foaf:Person .
+fam:motherOf rdfs:range foaf:Person .
+ex:fiona fam:motherOf ex:gary .
+
+# rdfs5
+fam:parentOf rdfs:subPropertyOf fam:ancestorOf .
+
+# rdfs7
+fam:fatherOf rdfs:subPropertyOf fam:parentOf .
+fam:motherOf rdfs:subPropertyOf fam:parentOf .
+
+# rdfs9
+ex:Audi rdfs:subClassOf ex:Car .
+ex:R8 rdf:type ex:Audi .
+
+# rdfs11
+ex:Mammal rdfs:subClassOf ex:Animal .
+foaf:Person rdfs:subClassOf ex:Mammal .
