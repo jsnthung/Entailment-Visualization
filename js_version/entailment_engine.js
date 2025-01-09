@@ -481,57 +481,109 @@ function addNewInferredTriple(rule, condition, inferredTriple) {
     }
 }
 
-function reducedEntailment() {
-    rdfs2();
-    rdfs3();
-    rdfs5();
-    rdfs6();
-    rdfs7();
-    rdfs9();
-    rdfs11();
+// Function to check or uncheck all checkboxes based on the master checkbox
+document.getElementById('checkAll').addEventListener('change', function() {
+    // Get all checkboxes with the name 'rules'
+    const checkboxes = document.querySelectorAll('input[name="rules"]');
 
-    console.log(inferredTriples.length + " new triples added");
-}
-
-function fullEntailment() {
-    rdfs1();
-    rdfs2();
-    rdfs3();
-    rdfs4a();
-    rdfs4b();
-    rdfs5();
-    rdfs6();
-    rdfs7();
-    rdfs8();
-    rdfs9();
-    rdfs10();
-    rdfs11();
-    rdfs12();
-    rdfs13();
-
-    console.log(inferredTriples.length + " new triples added");
-}
-
-document.getElementById('log').addEventListener('click', () => {
-    inferredTriples.forEach(inferredTriple => {
-        console.log("This triple is inferred through " + inferredTriple.rule);
-        console.log(qname(inferredTriple.inferred.subject.value, prefixMap) + " - " +
-            qname(inferredTriple.inferred.predicate.value, prefixMap) + " - " +
-            qname(inferredTriple.inferred.object.value, prefixMap));
-    })
-
-    console.log("First inferred triple");
-    console.log(qname(inferredTriples[0].inferred.subject.value, prefixMap) + " - " +
-        qname(inferredTriples[0].inferred.predicate.value, prefixMap) + " - " +
-        qname(inferredTriples[0].inferred.object.value, prefixMap));
+    // Set all checkboxes to the state of the master checkbox
+    checkboxes.forEach(function(checkbox) {
+        checkbox.checked = document.getElementById('checkAll').checked;
+    });
 });
 
-document.getElementById('full-entailment').addEventListener('click', () => {
-    fullEntailment();
-    console.log("Full Entailment")
+// Listen for changes in individual checkboxes to update the master checkbox
+const checkboxes = document.querySelectorAll('input[name="rules"]');
+checkboxes.forEach(function(checkbox) {
+    checkbox.addEventListener('change', function() {
+        const allChecked = Array.from(checkboxes).every(function(checkbox) {
+            return checkbox.checked;
+        });
+
+        // If all checkboxes are checked, set the master checkbox to checked
+        document.getElementById('checkAll').checked = allChecked;
+
+        // If any checkbox is unchecked, uncheck the master checkbox
+        if (!this.checked) {
+            document.getElementById('checkAll').indeterminate = true; // Set the master checkbox to indeterminate
+        } else {
+            const anyUnchecked = Array.from(checkboxes).some(function(checkbox) {
+                return !checkbox.checked;
+            });
+            document.getElementById('checkAll').indeterminate = anyUnchecked; // Set it to indeterminate if any are unchecked
+        }
+    });
 });
 
-document.getElementById('reduced-entailment').addEventListener('click', () => {
-    reducedEntailment();
-    console.log("Reduced Entailment")
+document.getElementById('entail').addEventListener('click', () => {
+    // Resetting the inferredTriples list
+    inferredTriples.length = 0;
+
+    // Picking rules
+    const selectedRules = [];
+    document.querySelectorAll('input[name="rules"]:checked').forEach((checkbox) => {
+        selectedRules.push(checkbox.value);
+    });
+
+    if (selectedRules.length === 0) {
+        console.log("Please select at least one rule");
+    } else {
+        console.log("Selected Rules:", selectedRules);
+
+        if (selectedRules.includes("rdfs1")) {
+            rdfs1();
+        }
+        if (selectedRules.includes("rdfs2")) {
+            rdfs2();
+        }
+        if (selectedRules.includes("rdfs3")) {
+            rdfs3();
+        }
+        if (selectedRules.includes("rdfs4a")) {
+            rdfs4a();
+        }
+        if (selectedRules.includes("rdfs4b")) {
+            rdfs4b();
+        }
+        if (selectedRules.includes("rdfs5")) {
+            rdfs5();
+        }
+        if (selectedRules.includes("rdfs6")) {
+            rdfs6();
+        }
+        if (selectedRules.includes("rdfs7")) {
+            rdfs7();
+        }
+        if (selectedRules.includes("rdfs8")) {
+            rdfs8();
+        }
+        if (selectedRules.includes("rdfs9")) {
+            rdfs9();
+        }
+        if (selectedRules.includes("rdfs10")) {
+            rdfs10();
+        }
+        if (selectedRules.includes("rdfs11")) {
+            rdfs11();
+        }
+        if (selectedRules.includes("rdfs12")) {
+            rdfs12();
+        }
+        if (selectedRules.includes("rdfs13")) {
+            rdfs13();
+        }
+    }
+
+    console.log("There are " + inferredTriples.length + " new triples to be added");
+});
+
+document.getElementById('toggle-sidebar').addEventListener('click', function () {
+    const sidebar = document.querySelector('.sidebar');
+    if (sidebar.classList.contains('hidden')) {
+        sidebar.classList.remove('hidden');
+        this.textContent = '⏪';
+    } else {
+        sidebar.classList.add('hidden');
+        this.textContent = '⏩';
+    }
 });

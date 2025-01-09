@@ -11,91 +11,206 @@
             margin: 0;
             display: flex;
             height: 100vh;
-            overflow: hidden;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fc;
+            color: #123456;
         }
-
-        /* Left-side text container */
-        .text-container {
-            width: 300px; /* Adjust the width as needed */
-            background-color: #f4f4f4;
+        .sidebar {
+            width: 300px;
+            background-color: #ffffff;
             padding: 20px;
-            box-sizing: border-box;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: fixed;
+            height: 100%;
             overflow-y: auto;
-            height: 100vh;
-            position: fixed; /* Fix on the left side */
         }
 
-        /* SVG container for the graph */
+        h1 {
+            font-size: 26px;
+            color: #123456;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 17px;
+            color: #123456;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        p {
+            font-size: 13px;
+            text-align: center;
+            color: #555;
+        }
+
+        input[type="file"] {
+            margin: 15px 0;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .rule {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .rule input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #1f3a93;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            margin-right: 10px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .rule input[type="checkbox"]:checked {
+            background-color: #1f3a93;
+            border-color: #154284;
+        }
+
+        .rule input[type="checkbox"]:checked::after {
+            content: '\2714';
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: 1px;
+            left: 3px;
+        }
+
+        .rule label {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px;
+            margin: 8px 0;
+            background-color: #1f3a93;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+
+
+        button:hover {
+            background-color: #154284;
+        }
+
         svg {
             display: block;
             flex-grow: 1;
-            margin-left: 300px; /* Space for the left-side container */
+            background-color: #ffffff;
+            margin-left: 300px;
         }
 
         .link {
             fill: none;
-            stroke: #2cb81d;
-            stroke-opacity: 0.6;
-            stroke-width: 1.5px;
+            stroke: #1f3a93;
+            stroke-opacity: 0.7;
+            stroke-width: 2px;
         }
 
         .node circle {
-            fill: #1f78b4;
-            stroke: #fff;
-            stroke-width: 1px;
+            fill: #1f3a93;
+            stroke: #ffffff;
+            stroke-width: 2px;
+            transition: fill 0.3s;
         }
 
         .node text {
-            font: 12px sans-serif;
-            pointer-events: none;
+            font-size: 13px;
+            fill: #000;
+            text-anchor: middle;
+            font-weight: bold;
         }
 
         .link-label {
-            font: 10px sans-serif;
-            fill: #000;
+            font-size: 12px;
+            fill: #1f3a93;
             text-anchor: middle;
+            font-weight: 500;
         }
 
-        /* Add button styling */
-        button {
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #4CAF50;
+        .sidebar-toggle {
+            position: fixed;
+            left: 300px;
+            background-color: #1f3a93;
             color: white;
             border: none;
+            padding: 6px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: left 0.3s ease-in-out;
         }
 
-        button:hover {
-            background-color: #45a049;
+        .sidebar.hidden {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar.hidden + .sidebar-toggle {
+            left: 10px; /* Move toggle button closer when sidebar is hidden */
         }
     </style>
 </head>
 <body>
-<div class="text-container">
-    <h2>Graph Information</h2>
-    <p>Here you can add some descriptive text or additional information related to the graph.</p>
-    <p>Use this space to explain the data or the visualization.</p>
+<div class="sidebar">
+    <h1>Entailment Visualization</h1>
+    <p>Explore how RDF graphs evolve step by step as new facts are inferred — try it now on our web platform!</p>
     <!--    Button to add a new edge -->
-    <button id="add-edge-button">Add Edge: ex:bob -> ex:mammal</button>
+    <button id="add-edge-button">Add Edge</button>
     <!--    Button to remove an edge-->
-    <button id="remove-edge-button">Remove Edge: ex:bob -> ex:mammal</button>
-    <!--    Button to change color-->
-    <button id="change-node-color-button">Change Node Color</button>
-    <!--    Button to change edge color-->
-    <button id="change-edge-color-button">Change Edge Color</button>
+    <button id="remove-edge-button">Undo</button>
+
     <h2>Select a Turtle (.ttl) file to parse</h2>
     <input type="file" id="fileInput" accept=".ttl" />
-    <button id="log">Log</button>
-    <button id="full-entailment">Full Entailment</button>
-    <button id="reduced-entailment">Reduced Entailment</button>
+    <button id="pause_resume">Start Entailment</button>
+    <button id="entail">Entailment Engine</button>
 
-    <button id="add-marker-end">Add Marker End</button>
-    <button id="style-marker-end">Style Marker End</button>
+    <h2>Choose RDFS Rules</h2>
+
+    <div class="rule">
+        <input type="checkbox" id="checkAll">
+        <label for="checkAll">Check All</label>
+    </div>
+
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs1" id="rdfs1"> <label for="rdfs1">RDFS 1</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs2" id="rdfs2"> <label for="rdfs2">RDFS 2</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs3" id="rdfs3"> <label for="rdfs3">RDFS 3</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs4a" id="rdfs4a"> <label for="rdfs4a">RDFS 4a</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs4b" id="rdfs4b"> <label for="rdfs4b">RDFS 4b</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs5" id="rdfs5"> <label for="rdfs5">RDFS 5</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs6" id="rdfs6"> <label for="rdfs6">RDFS 6</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs7" id="rdfs7"> <label for="rdfs7">RDFS 7</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs8" id="rdfs8"> <label for="rdfs8">RDFS 8</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs9" id="rdfs9"> <label for="rdfs9">RDFS 9</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs10" id="rdfs10"> <label for="rdfs10">RDFS 10</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs11" id="rdfs11"> <label for="rdfs11">RDFS 11</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs12" id="rdfs12"> <label for="rdfs12">RDFS 12</label></div>
+    <div class="rule"><input type="checkbox" name="rules" value="rdfs13" id="rdfs13"> <label for="rdfs13">RDFS 13</label></div>
 </div>
+<button id="toggle-sidebar" class="sidebar-toggle">⏪</button>
+
 
 <script src="graph.js"></script>
 <script src="entailment_engine.js"></script>
-</body>
 
+</body>
 </html>

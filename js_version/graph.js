@@ -74,10 +74,18 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 .attr("class", "node");
 
             node.append("circle")
-                .attr("r", 10);
+                .attr("r", 25);
+
+            node.append("rect")
+                .attr("x", d => d.id.length * -4) // Adjust positioning
+                .attr("y", -10)
+                .attr("width", d => d.id.length * 8) // Adjust size dynamically
+                .attr("height", 15)
+                .style("fill", "#fff")
+                .style("opacity", 0.8);
 
             node.append("text")
-                .attr("x", 12)
+                .attr("x", 0)
                 .attr("y", 3)
                 .text(d => d.id);
 
@@ -90,12 +98,11 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 .text(d => d.predicate);
 
             const simulation = d3.forceSimulation(nodes)
-                .force("link", d3.forceLink(links).id(d => d.id).distance(80))
-                .force("charge", d3.forceManyBody().strength(-100).distanceMin(10).distanceMax(300))
-                .force("center", d3.forceCenter(width / 2 + 150, height / 2))
-                .alpha(0.9)
-                .alphaTarget(0)
-                .velocityDecay(0.4);
+                .force("link", d3.forceLink(links).id(d => d.id).distance(120)) // Increase distance
+                .force("charge", d3.forceManyBody().strength(-150)) // Adjust repulsion
+                .force("collision", d3.forceCollide(20)) // Prevent overlap
+                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("collision", d3.forceCollide().radius(20)); // Set radius to avoid overlaps;
 
             simulation.on("tick", () => {
                 link.attr("x1", d => Math.max(10, Math.min(width - 10, d.source.x)))
@@ -109,8 +116,8 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                     return `translate(${d.x},${d.y})`;
                 });
 
-                linkText.attr("x", d => (d.source.x + d.target.x) / 2)
-                    .attr("y", d => (d.source.y + d.target.y) / 2);
+                linkText.attr("x", d => (d.source.x + d.target.x) / 2 + 10)
+                    .attr("y", d => (d.source.y + d.target.y) / 2 + 10);
             });
 
             const drag = d3.drag()
@@ -148,8 +155,42 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 conditions = inferredTriples[curStep].condition;
             }
 
-            // Handle "Add Edge" button click
-            document.getElementById("add-edge-button").addEventListener("click", () => {
+            function addNodeIfNotExist(nodeId) {
+                nodes.push({ id: nodeId });
+                // Update the node elements
+                node = svg.selectAll(".node")
+                    .data(nodes)
+                    .join(
+                        enter => {
+                            const newNodes = enter.append("g").attr("class", "node");
+
+                            newNodes.append("circle").attr("r", 25);
+                            newNodes.append("rect")
+                                .attr("x", d => d.id.length * -4) // Adjust positioning
+                                .attr("y", -10)
+                                .attr("width", d => d.id.length * 8) // Adjust size dynamically
+                                .attr("height", 15)
+                                .style("fill", "#fff")
+                                .style("opacity", 0.8);
+                            newNodes.append("text")
+                                .attr("x", 0)
+                                .attr("y", 3)
+                                .text(d => d.id);
+
+                            return newNodes;
+                        },
+                        update => update,  // No changes for updates
+                        exit => exit.remove()  // Remove outdated nodes
+                    );
+
+                // Rebind drag behavior to the newly added nodes
+                node.call(drag);
+
+                // Restart the simulation
+                simulation.nodes(nodes);
+            }
+
+            function nextStep() {
                 // If there are no more triple to be added
                 if (curStep === inferredTriples.length) {
                     console.log("Graph is fully entailed");
@@ -165,22 +206,13 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 const sourceNodeExists = nodes.some(node => node.id === newEdge.source);
                 const targetNodeExists = nodes.some(node => node.id === newEdge.target);
 
-                // At least one node does not exist
-                if (!sourceNodeExists || !targetNodeExists) {
-                    console.log(`Cannot add edge. Missing node(s): ${!sourceNodeExists ? newEdge.source : ""} ${!targetNodeExists ? newEdge.target : ""}`);
-                    return; // Exit without adding the edge
+                // Add missing node(s)
+                if (!sourceNodeExists) {
+                    addNodeIfNotExist(newEdge.source);
                 }
 
-                // Check if the edge already exists
-                const edgeExists = links.some(link =>
-                    link.source.id === newEdge.source &&
-                    link.target.id === newEdge.target &&
-                    link.predicate === newEdge.predicate
-                );
-
-                if (edgeExists) {
-                    console.log('Edge already exists:', newEdge);
-                    return; // Exit without adding the edge
+                if (!targetNodeExists) {
+                    addNodeIfNotExist(newEdge.target);
                 }
 
                 // Add new edge to the links array
@@ -218,9 +250,48 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
 
                 simulation.force("link").links(links);
                 simulation.alpha(1).restart();
-            });
+            }
+            // Handle button for next step on click
+            document.getElementById("add-edge-button").addEventListener("click", nextStep);
 
-            // Handle "Remove Edge" button click
+            function onInitialGraph(nodeId) {
+                return nodeSet.has(nodeId);
+            }
+
+            function hasEdge(nodeId) {
+                return links.some(link => link.source.id === nodeId || link.target.id === nodeId);
+            }
+
+            function removeNode(nodeId) {
+                const indexToRemove = nodes.findIndex(node => node.id === nodeId);
+                if (indexToRemove !== -1) {
+                    nodes.splice(indexToRemove, 1); // Remove the node directly
+                }
+
+                // Update the graph visualization
+                node = svg.selectAll(".node")
+                    .data(nodes)
+                    .join(
+                        enter => {
+                            const newNodes = enter.append("g").attr("class", "node");
+
+                            newNodes.append("circle").attr("r", 10);
+                            newNodes.append("text")
+                                .attr("x", 12)
+                                .attr("y", 3)
+                                .text(d => d.id);
+
+                            return newNodes;
+                        },
+                        update => update,
+                        exit => exit.remove()
+                    );
+
+                simulation.nodes(nodes);
+                simulation.alpha(1).restart();
+            }
+
+            // Handle button for back step on click
             document.getElementById("remove-edge-button").addEventListener("click", () => {
                 // If you reach the initial graph
                 if (curStep === 0) {
@@ -266,6 +337,15 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                             exit => exit.remove()  // Remove outdated labels
                         );
 
+                    // Remove edge if it no longer has any edge and not present in the initial graph
+                    if (!onInitialGraph(edgeToRemove.source) && !hasEdge(edgeToRemove.source)) {
+                        removeNode(edgeToRemove.source);
+                    }
+
+                    if (!onInitialGraph(edgeToRemove.target) && !hasEdge(edgeToRemove.target)) {
+                        removeNode(edgeToRemove.target);
+                    }
+
                     // TODO: Highlight triple to be removed
 
                     // Log nodes and links after removing an edge
@@ -275,11 +355,28 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 }
             });
 
+            let timer;
+            let isRunning = false;
+
+            // Event listener for the button to toggle between start and pause
+            document.getElementById('pause_resume').addEventListener('click', function() {
+                if (isRunning) {
+                    // If the timer is running, stop it
+                    clearInterval(timer);
+                    this.textContent = 'Start'; // Change button text to "Start"
+                } else {
+                    // If the timer is not running, start it
+                    timer = setInterval(nextStep, 1000);
+                    this.textContent = 'Pause'; // Change button text to "Pause"
+                }
+                isRunning = !isRunning; // Toggle the isRunning state
+            });
+
             function highlightCondition(conditions) {
                 conditions.forEach(condition => {
                     // Highlight subject
                     const subjectNode = d3.selectAll(".node").filter(node => node.id === qname(condition.subject.value, prefixMap));
-                    subjectNode.select("circle").transition().duration(500).attr("r", 12).style("fill", "red");
+                    subjectNode.select("circle").transition().duration(500).attr("r", 25).style("fill", "red");
 
                     // Highlight predicate
                     const predEdge = d3.selectAll(".link")
@@ -291,113 +388,84 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
 
                     // Highlight object
                     const objectNode = d3.selectAll(".node").filter(node => node.id === qname(condition.object.value, prefixMap));
-                    objectNode.select("circle").transition().duration(500).attr("r", 12).style("fill", "red");
+                    objectNode.select("circle").transition().duration(500).attr("r", 25).style("fill", "red");
 
                     setTimeout(() => {
-                        subjectNode.select("circle").transition().duration(500).attr("r", 10).style("fill", "#1f78b4");
-                        predEdge.transition().duration(500).style("stroke", "#2cb81d").style("stroke-width", "1.5px");
-                        objectNode.select("circle").transition().duration(500).attr("r", 10).style("fill", "#1f78b4");
+                        subjectNode.select("circle").transition().duration(500).attr("r", 25).style("fill", "#1f3a93");
+                        predEdge.transition().duration(500).style("stroke", "#1f3a93").style("stroke-width", "1.5px");
+                        objectNode.select("circle").transition().duration(500).attr("r", 25).style("fill", "#1f3a93");
                     }, 2000);
                 })
             }
 
-            document.getElementById("change-node-color-button").addEventListener("click", () => {
-                const bobNode = d3.selectAll(".node").filter(node => node.id === tripleSource);
+            // document.getElementById("change-node-color-button").addEventListener("click", () => {
+            //     const bobNode = d3.selectAll(".node").filter(node => node.id === tripleSource);
+            //
+            //     bobNode.select("circle")
+            //         .transition()
+            //         .duration(500)
+            //         .attr("r", 16)
+            //         .style("fill", "red");
+            // });
+            //
+            // document.getElementById("change-node-color-button").addEventListener("dblclick", () => {
+            //     const bobNode = d3.selectAll(".node").filter(node => node.id === tripleSource);
+            //
+            //     bobNode.select("circle")
+            //         .transition()
+            //         .duration(500)
+            //         .attr("r", 10)
+            //         .style("fill", "#1f78b4");
+            // });
 
-                bobNode.select("circle")
-                    .transition()
-                    .duration(500)
-                    .attr("r", 16)
-                    .style("fill", "red");
-            });
-
-            document.getElementById("change-node-color-button").addEventListener("dblclick", () => {
-                const bobNode = d3.selectAll(".node").filter(node => node.id === tripleSource);
-
-                bobNode.select("circle")
-                    .transition()
-                    .duration(500)
-                    .attr("r", 10)
-                    .style("fill", "#1f78b4");
-            });
-
-            document.getElementById("change-edge-color-button").addEventListener("click", () => {
-                const bobPersonEdge = d3.selectAll(".link")
-                    .filter(edge =>  edge.source.id === "ex:ed" &&
-                        edge.target.id === "Ed" &&
-                        edge.predicate === "foaf:name");
-
-                bobPersonEdge.each(function() {
-                    const markerId = d3.select(this).attr("marker-end");
-                    console.log(`Marker ID for bobPersonEdge: ${markerId}`);
-                });
-
-                // Create a new marker for this specific edge
-                const uniqueMarkerId = "arrow-bob-person";
-
-                d3.select("defs").append("marker")
-                    .attr("id", uniqueMarkerId)
-                    .attr("viewBox", "0 -5 10 10")
-                    .attr("refX", 17) // Adjust position
-                    .attr("refY", 0)
-                    .attr("markerWidth", 4)
-                    .attr("markerHeight", 4)
-                    .attr("orient", "auto")
-                    .append("path")
-                    .attr("d", "M0,-5L10,0L0,5") // Arrowhead shape
-                    .attr("fill", "red");
-
-                // Apply the custom marker-end to the selected edge
-                bobPersonEdge
-                    .transition()
-                    .duration(500)
-                    .style("stroke", "red")
-                    .style("stroke-width", "3px")
-                    .attr("marker-end", `url(#${uniqueMarkerId})`);
-            });
-
-            document.getElementById("change-edge-color-button").addEventListener("dblclick", () => {
-                const bobPersonEdge = d3.selectAll(".link")
-                    .filter(edge =>  edge.source.id === "ex:ed" &&
-                        edge.target.id === "Ed" &&
-                        edge.predicate === "foaf:name");
-
-                bobPersonEdge
-                    .transition()
-                    .duration(500)
-                    .style("stroke", "#2cb81d")
-                    .style("stroke-width", "1.5px")
-                    .attr("marker-end", "url(#arrow)");
-            });
-
-            document.getElementById("add-marker-end").addEventListener("click", () => {
-                // ex:R8 rdf:type ex:Audi
-                const edge = d3.selectAll(".link").filter(edge => edge.source.id === "ex:R8" && edge.target.id === "ex:Audi" && edge.predicate === "rdf:type");
-
-                // const markerId = d3.select(this).attr("marker-end");
-                // console.log(`Marker ID for bobPersonEdge: ${markerId}`);
-
-                const newMarkerId = "ex:R8-rdf:type-ex:Audi";
-
-                d3.select("defs").append("marker")
-                    .attr("id", newMarkerId)
-                    .attr("viewBox", "0 -5 10 10")
-                    .attr("refX", 17) // Adjust position
-                    .attr("refY", 0)
-                    .attr("markerWidth", 4)
-                    .attr("markerHeight", 4)
-                    .attr("orient", "auto")
-                    .append("path")
-                    .attr("d", "M0,-5L10,0L0,5") // Arrowhead shape
-                    .attr("fill", "red");
-
-                edge.transition().duration(500).style("stroke", "red")
-                    .style("stroke-width", "3px").attr("marker-end", `url(#${newMarkerId})`);
-
-                console.log(edge.attr("marker-end"));
-            })
-
-            document.getElementById("style-marker-end").addEventListener("click", () => {})
+            // document.getElementById("change-edge-color-button").addEventListener("click", () => {
+            //     const bobPersonEdge = d3.selectAll(".link")
+            //         .filter(edge =>  edge.source.id === "ex:ed" &&
+            //             edge.target.id === "Ed" &&
+            //             edge.predicate === "foaf:name");
+            //
+            //     bobPersonEdge.each(function() {
+            //         const markerId = d3.select(this).attr("marker-end");
+            //         console.log(`Marker ID for bobPersonEdge: ${markerId}`);
+            //     });
+            //
+            //     // Create a new marker for this specific edge
+            //     const uniqueMarkerId = "arrow-bob-person";
+            //
+            //     d3.select("defs").append("marker")
+            //         .attr("id", uniqueMarkerId)
+            //         .attr("viewBox", "0 -5 10 10")
+            //         .attr("refX", 17) // Adjust position
+            //         .attr("refY", 0)
+            //         .attr("markerWidth", 4)
+            //         .attr("markerHeight", 4)
+            //         .attr("orient", "auto")
+            //         .append("path")
+            //         .attr("d", "M0,-5L10,0L0,5") // Arrowhead shape
+            //         .attr("fill", "red");
+            //
+            //     // Apply the custom marker-end to the selected edge
+            //     bobPersonEdge
+            //         .transition()
+            //         .duration(500)
+            //         .style("stroke", "red")
+            //         .style("stroke-width", "3px")
+            //         .attr("marker-end", `url(#${uniqueMarkerId})`);
+            // });
+            //
+            // document.getElementById("change-edge-color-button").addEventListener("dblclick", () => {
+            //     const bobPersonEdge = d3.selectAll(".link")
+            //         .filter(edge =>  edge.source.id === "ex:ed" &&
+            //             edge.target.id === "Ed" &&
+            //             edge.predicate === "foaf:name");
+            //
+            //     bobPersonEdge
+            //         .transition()
+            //         .duration(500)
+            //         .style("stroke", "#2cb81d")
+            //         .style("stroke-width", "1.5px")
+            //         .attr("marker-end", "url(#arrow)");
+            // });
         };
 
         reader.readAsText(file);
