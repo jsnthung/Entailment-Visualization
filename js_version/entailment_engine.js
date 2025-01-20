@@ -1,6 +1,6 @@
 let inferredTriples = [];
 
-function addInferredTriple (sourceId, predId, targetId) {
+function addInferredTriple(sourceId, predId, targetId) {
     inferredTriples.push({
         "rule": "rdfs1",
         "condition": [
@@ -19,12 +19,12 @@ function addInferredTriple (sourceId, predId, targetId) {
 }
 
 document.addEventListener('parsingFinished', (event) => {
-    addInferredTriple("sub1", "pred1", "obj1");
-    addInferredTriple("sub1", "pred2", "obj1");
-    addInferredTriple("sub1", "pred3", "obj1");
-    addInferredTriple("sub1", "pred4", "obj1");
-    addInferredTriple("sub1", "pred5", "obj1");
-    addInferredTriple("sub1", "pred6", "obj1");
+    // addInferredTriple("sub1", "pred1", "obj1");
+    // addInferredTriple("sub1", "pred2", "obj1");
+    // addInferredTriple("sub1", "pred3", "obj1");
+    // addInferredTriple("sub1", "pred4", "obj1");
+    // addInferredTriple("sub1", "pred5", "obj1");
+    // addInferredTriple("sub1", "pred6", "obj1");
 
     const RDFS = {
         domain: namedNode("http://www.w3.org/2000/01/rdf-schema#domain"),
@@ -465,7 +465,7 @@ document.addEventListener('parsingFinished', (event) => {
             console.log("Please select at least one rule");
         } else {
             // Start of entailment engine
-            // console.time('runtime');
+            console.time('runtime');
 
             let hasNewInference = true;
             while (hasNewInference) {
@@ -518,8 +518,8 @@ document.addEventListener('parsingFinished', (event) => {
 
                 const finalSize = inferredTriples.length;
 
-                console.log("Initial size", initialSize);
-                console.log("Final size", finalSize);
+                // console.log("Initial size", initialSize);
+                // console.log("Final size", finalSize);
 
                 if (finalSize > initialSize) {
                     hasNewInference = true;
@@ -529,9 +529,9 @@ document.addEventListener('parsingFinished', (event) => {
             console.log("Inferred Triples:")
             console.log(inferredTriples);
 
-            inferredTriples.forEach(triple => {
-                console.log(`${triple.inferred.subject.id} - ${triple.inferred.predicate.id} - ${triple.inferred.object.id}`);
-            })
+            // inferredTriples.forEach(triple => {
+            //     console.log(`${triple.inferred.subject.id} - ${triple.inferred.predicate.id} - ${triple.inferred.object.id}`);
+            // })
 
             const ruleCounts = inferredTriples.reduce((counts, entry) => {
                 counts[entry.rule] = (counts[entry.rule] || 0) + 1;
@@ -542,7 +542,7 @@ document.addEventListener('parsingFinished', (event) => {
             console.log(ruleCounts);
 
             // End of entailment engine
-            // console.timeEnd('runtime');
+            console.timeEnd('runtime');
         }
     });
 });

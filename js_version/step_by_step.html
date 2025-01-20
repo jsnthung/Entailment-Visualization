@@ -181,6 +181,69 @@
         .zoom-controls button:hover {
             background-color: #154284;
         }
+
+        .rule label[for="rdfs2"],
+        .rule label[for="rdfs3"],
+        .rule label[for="rdfs5"],
+        .rule label[for="rdfs6"],
+        .rule label[for="rdfs7"],
+        .rule label[for="rdfs9"],
+        .rule label[for="rdfs11"] {
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            z-index: 1001;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal.active, .modal-overlay.active {
+            display: block;
+        }
+
+        .modal .close-button {
+            background: #d83930;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .modal p {
+            margin: 14px 0;
+            text-align: left;
+        }
+
+        .modal strong {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -229,12 +292,44 @@
         12</label></div>
     <div class="rule"><input type="checkbox" name="rules" value="rdfs13" id="rdfs13"> <label for="rdfs13">RDFS
         13</label></div>
+
+    <button id="exportGraph">Export Graph as JSON</button>
 </div>
 
 <div class="zoom-controls">
     <button id="zoom-in">+</button>
     <button id="zoom-out">−</button>
 </div>
+
+<div class="modal-overlay active" id="modal-overlay"></div>
+<div class="modal active" id="modal">
+    <button class="close-button" id="close-modal">Close</button>
+    <strong>How to use our web?</strong>
+    <p>Step 1: Choose a file to parse</p>
+    <p>Step 2: Choose RDF Rules you want to apply first</p>
+    <p>Step 3: Click Apply Entailment Engine</p>
+    <p>Step 4: Click Start Entailment to start the graph automatically</p>
+    <p>Step 5: Stop/Pause anytime!</p>
+    <p>Step 6: Add new triples manually by clicking "Add New Triple"</p>
+    <p>Step 7: Remove the added new triple by clicking "Undo"</p>
+    <p>Enjoy!!</p>
+</div>
+
+<script>
+    const closeModalButton = document.getElementById('close-modal');
+    const modal = document.getElementById('modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+
+    closeModalButton.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modalOverlay.classList.remove('active');
+    });
+
+    modalOverlay.addEventListener('click', () => {
+        modal.classList.remove('active');
+        modalOverlay.classList.remove('active');
+    });
+</script>
 
 <script src="parse_graph.js"></script>
 <script src="entailment_engine.js"></script>

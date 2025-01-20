@@ -26,8 +26,8 @@ document.addEventListener('parsingFinished', (event) => {
         links,
     };
 
-    console.log("Nodes: ", graphData.nodes);
-    console.log("Links: ", graphData.links);
+    // console.log("Nodes: ", graphData.nodes);
+    // console.log("Links: ", graphData.links);
 
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -426,6 +426,63 @@ document.addEventListener('parsingFinished', (event) => {
         d.fx = null;
         d.fy = null;
     }
+
+    function exportGraph() {
+        const allTriples = [...triples, ...inferredTriples.map(triple => triple.inferred)];
+        const graph = allTriples.map(triple => ({
+            subject: triple.subject.value,
+            predicate: triple.predicate.value,
+            object: triple.object.value,
+        }));
+
+        const graphJSON = JSON.stringify(graph, null, 2);
+        console.log("Exporting Graph:");
+        console.log(graphJSON);
+
+        // Optionally download as a file
+        const blob = new Blob([graphJSON], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "graph.json";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+// Function to count edge crossings (simple heuristic example)
+    function countEdgeCrossings(graph) {
+        let crossings = 0;
+
+        for (let i = 0; i < graph.length; i++) {
+            for (let j = i + 1; j < graph.length; j++) {
+                const edgeA = graph[i];
+                const edgeB = graph[j];
+
+                // Simplistic crossing detection (assumes edges are direct lines)
+                if (edgeA.subject !== edgeB.subject && edgeA.object !== edgeB.object) {
+                    crossings++;
+                }
+            }
+        }
+
+        console.log(`Edge Crossings: ${crossings}`);
+        return crossings;
+    }
+
+// Bind export and count functionality to buttons or specific events
+    document.getElementById('exportGraph').addEventListener('click', () => {
+        exportGraph();
+
+        const allTriples = [...triples, ...inferredTriples.map(triple => triple.inferred)];
+        const graph = allTriples.map(triple => ({
+            subject: triple.subject.value,
+            predicate: triple.predicate.value,
+            object: triple.object.value,
+        }));
+
+        countEdgeCrossings(graph);
+    });
 });
 
 // Function to replace URI with corresponding prefix
