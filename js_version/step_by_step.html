@@ -256,6 +256,7 @@
     <h2>Select a Turtle (.ttl) file to parse</h2>
     <input type="file" id="fileInput" accept=".ttl"/>
     <button id="entail">Entailment Engine</button>
+    <button id="log">Log</button>
 
     <h2>Choose RDFS Rules</h2>
 
@@ -301,37 +302,36 @@
     <button id="zoom-out">−</button>
 </div>
 
-<div class="modal-overlay active" id="modal-overlay"></div>
-<div class="modal active" id="modal">
-    <button class="close-button" id="close-modal">Close</button>
-    <strong>How to use our web?</strong>
-    <p>Step 1: Choose a file to parse</p>
-    <p>Step 2: Choose RDF Rules you want to apply first</p>
-    <p>Step 3: Click Apply Entailment Engine</p>
-    <p>Step 4: Click Start Entailment to start the graph automatically</p>
-    <p>Step 5: Stop/Pause anytime!</p>
-    <p>Step 6: Add new triples manually by clicking "Add New Triple"</p>
-    <p>Step 7: Remove the added new triple by clicking "Undo"</p>
-    <p>Enjoy!!</p>
-</div>
+<!--<div class="modal-overlay active" id="modal-overlay"></div>-->
+<!--<div class="modal active" id="modal">-->
+<!--    <button class="close-button" id="close-modal">Close</button>-->
+<!--    <strong>How to use our web?</strong>-->
+<!--    <p>Step 1: Choose a file to parse</p>-->
+<!--    <p>Step 2: Choose RDF Rules you want to apply first</p>-->
+<!--    <p>Step 3: Click Apply Entailment Engine</p>-->
+<!--    <p>Step 4: Click Start Entailment to start the graph automatically</p>-->
+<!--    <p>Step 5: Stop/Pause anytime!</p>-->
+<!--    <p>Step 6: Add new triples manually by clicking "Add New Triple"</p>-->
+<!--    <p>Step 7: Remove the added new triple by clicking "Undo"</p>-->
+<!--    <p>Enjoy!!</p>-->
+<!--</div>-->
 
-<script>
-    const closeModalButton = document.getElementById('close-modal');
-    const modal = document.getElementById('modal');
-    const modalOverlay = document.getElementById('modal-overlay');
+<!--<script>-->
+<!--    const closeModalButton = document.getElementById('close-modal');-->
+<!--    const modal = document.getElementById('modal');-->
+<!--    const modalOverlay = document.getElementById('modal-overlay');-->
 
-    closeModalButton.addEventListener('click', () => {
-        modal.classList.remove('active');
-        modalOverlay.classList.remove('active');
-    });
+<!--    closeModalButton.addEventListener('click', () => {-->
+<!--        modal.classList.remove('active');-->
+<!--        modalOverlay.classList.remove('active');-->
+<!--    });-->
 
-    modalOverlay.addEventListener('click', () => {
-        modal.classList.remove('active');
-        modalOverlay.classList.remove('active');
-    });
-</script>
+<!--    modalOverlay.addEventListener('click', () => {-->
+<!--        modal.classList.remove('active');-->
+<!--        modalOverlay.classList.remove('active');-->
+<!--    });-->
+<!--</script>-->
 
-<script src="parse_graph.js"></script>
 <script src="entailment_engine.js"></script>
 <script src="graph.js"></script>
 
