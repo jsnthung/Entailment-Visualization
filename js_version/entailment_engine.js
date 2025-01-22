@@ -28,6 +28,8 @@ let inferredTriples = [];
 //     ...
 // ]
 
+let numOfInference = 0;
+
 const RDFS = {
     domain: namedNode("http://www.w3.org/2000/01/rdf-schema#domain"),
     range: namedNode("http://www.w3.org/2000/01/rdf-schema#range"),
@@ -58,7 +60,9 @@ function rdfs1() {
                 "object": RDFS.Datatype
             }
 
-            addNewInferredTriple("rdfs1", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs1", condition, inferredTriple);
+            }
         }
         if (triple.object.termType === "NamedNode") {
             let condition = [];
@@ -68,7 +72,9 @@ function rdfs1() {
                 "object": RDFS.Datatype
             }
 
-            addNewInferredTriple("rdfs1", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs1", condition, inferredTriple);
+            }
         }
     })
 }
@@ -100,7 +106,9 @@ function rdfs2() {
                         "object": domain
                     };
 
-                    addNewInferredTriple("rdfs2", condition, inferredTriple);
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs2", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -134,7 +142,9 @@ function rdfs3() {
                         "object": range
                     }
 
-                    addNewInferredTriple("rdfs3", condition, inferredTriple);
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs3", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -157,7 +167,9 @@ function rdfs4a() {
             "object": RDFS.Resource
         }
 
-        addNewInferredTriple("rdfs4a", condition, inferredTriple);
+        if (inferredTriples.length < numOfInference) {
+            addNewInferredTriple("rdfs4a", condition, inferredTriple);
+        }
     })
 }
 
@@ -177,7 +189,10 @@ function rdfs4b() {
             "object": RDFS.Resource
         }
 
-        addNewInferredTriple("rdfs4b", condition, inferredTriple);
+
+        if (inferredTriples.length < numOfInference) {
+            addNewInferredTriple("rdfs4b", condition, inferredTriple);
+        }
     })
 }
 
@@ -210,7 +225,10 @@ function rdfs5() {
                         "object": p3
                     }
 
-                    addNewInferredTriple("rdfs5", condition, inferredTriple);
+
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs5", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -236,7 +254,9 @@ function rdfs6() {
                 "object": subj
             }
 
-            addNewInferredTriple("rdfs6", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs6", condition, inferredTriple);
+            }
         }
     })
 }
@@ -271,7 +291,9 @@ function rdfs7() {
                         "object": obj
                     }
 
-                    addNewInferredTriple("rdfs7", condition, inferredTriple);
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs7", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -297,7 +319,9 @@ function rdfs8() {
                 "object": RDFS.Resource
             }
 
-            addNewInferredTriple("rdfs8", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs8", condition, inferredTriple);
+            }
         }
     })
 }
@@ -331,7 +355,9 @@ function rdfs9() {
                         "object": superclass
                     }
 
-                    addNewInferredTriple("rdfs9", condition, inferredTriple);
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs9", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -357,7 +383,9 @@ function rdfs10() {
                 "object": subj
             }
 
-            addNewInferredTriple("rdfs10", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs10", condition, inferredTriple);
+            }
         }
     })
 }
@@ -391,7 +419,9 @@ function rdfs11() {
                         "object": obj2
                     }
 
-                    addNewInferredTriple("rdfs11", condition, inferredTriple);
+                    if (inferredTriples.length < numOfInference) {
+                        addNewInferredTriple("rdfs11", condition, inferredTriple);
+                    }
                 }
             })
         }
@@ -417,7 +447,9 @@ function rdfs12() {
                 "object": RDFS.member
             }
 
-            addNewInferredTriple("rdfs12", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs12", condition, inferredTriple);
+            }
         }
     })
 }
@@ -441,7 +473,9 @@ function rdfs13() {
                 "object": RDFS.Literal
             }
 
-            addNewInferredTriple("rdfs13", condition, inferredTriple);
+            if (inferredTriples.length < numOfInference) {
+                addNewInferredTriple("rdfs13", condition, inferredTriple);
+            }
         }
     })
 }
@@ -475,7 +509,7 @@ function addNewInferredTriple(rule, condition, inferredTriple) {
     }
 }
 
-const selectedRules = [];
+let selectedRules = [];
 
 document.getElementById('checkAll').addEventListener('change', function () {
     // Get all checkboxes with the name 'rules'
@@ -507,6 +541,8 @@ checkboxes.forEach(function (checkbox) {
 });
 
 document.getElementById('entail').addEventListener('click', async () => {
+    selectedRules = ["rdfs1", "rdfs2", "rdfs3", "rdfs4a", "rdfs4b", "rdfs5", "rdfs6", "rdfs7", "rdfs8", "rdfs9", "rdfs10", "rdfs11", "rdfs12", "rdfs13"];
+
     document.querySelectorAll('input[name="rules"]:checked').forEach((checkbox) => {
         selectedRules.push(checkbox.value);
     });
@@ -516,57 +552,171 @@ document.getElementById('entail').addEventListener('click', async () => {
     } else {
         console.time('runtime');
 
-        let initialMemoryUsage = performance.memory?.usedJSHeapSize || 0;
-        console.log(`Initial memory usage: ${initialMemoryUsage} bytes`);
-
-        let memorySnapshots = [];
         let hasNewInference = true;
+
+        const heapLimit = performance.memory.jsHeapSizeLimit;
+        console.log("JS Heap limit: " + heapLimit / 1024 / 1024 + " MB");
+
+        const initialTotalHeapSize = performance.memory.totalJSHeapSize;
+        const initialUsedHeapSize = performance.memory.usedJSHeapSize;
+
+        console.log("Initial total heap size: " + initialTotalHeapSize / 1024 / 1024 + " MB");
+        console.log("Initial used heap size: " + initialUsedHeapSize / 1024 / 1024 + " MB");
+
+        let iteration = 0;
+        let memoryUsage = [];
 
         while (hasNewInference) {
             hasNewInference = false;
 
             const initialSize = inferredTriples.length;
 
-            if (selectedRules.includes("rdfs1")) rdfs1();
-            if (selectedRules.includes("rdfs2")) rdfs2();
-            if (selectedRules.includes("rdfs3")) rdfs3();
-            if (selectedRules.includes("rdfs4a")) rdfs4a();
-            if (selectedRules.includes("rdfs4b")) rdfs4b();
-            if (selectedRules.includes("rdfs5")) rdfs5();
-            if (selectedRules.includes("rdfs6")) rdfs6();
-            if (selectedRules.includes("rdfs7")) rdfs7();
-            if (selectedRules.includes("rdfs8")) rdfs8();
-            if (selectedRules.includes("rdfs9")) rdfs9();
-            if (selectedRules.includes("rdfs10")) rdfs10();
-            if (selectedRules.includes("rdfs11")) rdfs11();
-            if (selectedRules.includes("rdfs12")) rdfs12();
-            if (selectedRules.includes("rdfs13")) rdfs13();
+            if (selectedRules.includes("rdfs1")) {
+                rdfs1();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs1",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs2")) {
+                rdfs2();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs2",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs3")) {
+                rdfs3();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs3",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs4a")) {
+                rdfs4a();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs4a",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs4b")) {
+                rdfs4b();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs4b",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs5")) {
+                rdfs5();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs5",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs6")) {
+                rdfs6();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs6",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs7")) {
+                rdfs7();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs7",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs8")) {
+                rdfs8();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs8",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs9")) {
+                rdfs9();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs9",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs10")) {
+                rdfs10();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs10",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs11")) {
+                rdfs11();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs11",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs12")) {
+                rdfs12();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs12",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
+            if (selectedRules.includes("rdfs13")) {
+                rdfs13();
+                memoryUsage.push({
+                    iteration: iteration,
+                    rule: "rdfs13",
+                    usedJSHeapSize: performance.memory.usedJSHeapSize / 1024 / 1024,
+                    totalJSHeapSize: performance.memory.totalJSHeapSize / 1024 / 1024,
+                });
+            }
 
             const finalSize = inferredTriples.length;
             if (finalSize > initialSize) {
                 hasNewInference = true;
             }
 
-            // Take memory snapshot after each iteration
-            if (performance.memory) {
-                memorySnapshots.push({
-                    iteration: memorySnapshots.length + 1,
-                    usedJSHeapSize: performance.memory.usedJSHeapSize,
-                    totalJSHeapSize: performance.memory.totalJSHeapSize,
-                });
-            }
-        }
-
-        let finalMemoryUsage = performance.memory?.usedJSHeapSize || 0;
-        console.log(`Final memory usage: ${finalMemoryUsage} bytes`);
-
-        if (performance.memory) {
-            const memoryDifference = finalMemoryUsage - initialMemoryUsage;
-            console.log(`Memory used during entailment: ${memoryDifference} bytes`);
-            console.log("Memory snapshots:", memorySnapshots);
+            iteration++;
         }
 
         console.timeEnd('runtime');
+
+        const finalTotalHeapSize = performance.memory.totalJSHeapSize;
+        const finalUsedHeapSize = performance.memory.usedJSHeapSize;
+
+        console.log("Final total heap size: " + finalTotalHeapSize / 1024 / 1024 + " MB");
+        console.log("Final used heap size:", finalUsedHeapSize / 1024 / 1024 + " MB");
+
+        console.log("finalUsedHeapSize - initialUsedHeapSize:", (finalUsedHeapSize - initialUsedHeapSize) / 1024 / 1024 + " MB");
+
+        console.log("Memory usage:", memoryUsage);
 
         console.log("Inferred Triples:")
         console.log(inferredTriples);
