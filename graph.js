@@ -532,8 +532,12 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
             document.getElementById("next-step").addEventListener("click", () => {
                 if (curStep === inferredTriples.length) {
                     console.log("Graph is fully entailed");
+                    const rulePanelContent = document.getElementById('rulePanelContent');
+                    rulePanelContent.innerHTML = 'Graph is fully entailed';
                     return;
                 }
+
+                updateRulePanelContentAdd(inferredTriples[curStep].rule, inferredTriples[curStep].condition, inferredTriples[curStep].inferred);
 
                 updateStep();
                 curStep++;
@@ -611,6 +615,8 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
             document.getElementById("prev-step").addEventListener("click", () => {
                 if (curStep === 0) {
                     console.log("This is the initial graph")
+                    const rulePanelContent = document.getElementById('rulePanelContent');
+                    rulePanelContent.innerHTML = 'This is the initial graph';
                     return;
                 }
 
@@ -619,6 +625,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 const edgeToRemove = {sourceId: tripleSource, targetId: tripleTarget, predicate: triplePred};
 
                 removeEdge(edgeToRemove.sourceId, edgeToRemove.targetId, edgeToRemove.predicate);
+                updateRulePanelContentRemove(edgeToRemove.sourceId, edgeToRemove.targetId, edgeToRemove.predicate);
             });
 
 // Function to update the graph
@@ -718,9 +725,40 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
             }
 
             document.getElementById("log").addEventListener("click", () => {
-                const rulePanelContent = document.getElementById('rulePanelContent');
-                rulePanelContent.innerHTML += `<p>New content added</p>`;
+
             });
+
+            function updateRulePanelContentAdd(rule, conditions, inferredTriple) {
+                const rulePanelContent = document.getElementById('rulePanelContent');
+
+                // Handle the conditions array
+                let conditionsHTML;
+                if (conditions.length === 0) {
+                    conditionsHTML = '<p>No conditions</p>';
+                } else {
+                    conditionsHTML = '<ul>' +
+                        conditions.map(condition => `<li>${qname(condition.subject.id, prefixMap)} - ${qname(condition.predicate.id, prefixMap)} - ${qname(condition.object.id, prefixMap)}</li>`).join('') +
+                        '</ul>';
+                }
+
+                // Update the rule panel content
+                rulePanelContent.innerHTML = `
+                    <h2>Rule</h2>
+                    <p>${rule}</p>
+                    <h2>Condition(s)</h2>
+                    ${conditionsHTML}
+                    <h2>Inferred Triple</h2>
+                    <p>${qname(inferredTriple.subject.id, prefixMap)} - ${qname(inferredTriple.predicate.id, prefixMap)} - ${qname(inferredTriple.object.id, prefixMap)}</p>
+                `;
+            }
+
+            function updateRulePanelContentRemove(removedTripleSubject, removedTripleObject, removedTriplePredicate) {
+                const rulePanelContent = document.getElementById('rulePanelContent');
+                rulePanelContent.innerHTML = `
+                    <h2>Removed Triple</h2>
+                    <p>${qname(removedTripleSubject, prefixMap)} - ${qname(removedTriplePredicate, prefixMap)} - ${qname(removedTripleObject, prefixMap)}</p>
+                `;
+            }
         };
 
         reader.readAsText(file);
