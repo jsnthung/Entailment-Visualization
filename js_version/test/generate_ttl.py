@@ -7,16 +7,16 @@ def generate_ttl_file(filename):
     # Initialize content with prefixes
     content = prefixes
 
-    rdfs2_limit = 400
-    rdfs3_limit = 500
-    rdfs5_limit = 1000
-    rdfs6_limit = 400
-    rdfs7_limit = 1000
-    rdfs8_10_limit = 2000
-    rdfs11_limit = 200
-    rdfs12_limit = 600
-    dummy_uri = 50
-    dummy_literal = 50
+    rdfs2_limit = 50 # 2
+    rdfs3_limit = 50# 2
+    rdfs5_limit = 10 # 2
+    rdfs6_limit = 20 # 1
+    rdfs7_limit = 5 # 2
+    rdfs8_10_limit = 10 # 1
+    rdfs11_limit = 5 # 2
+    rdfs12_limit = 10 # 1
+    dummy_uri = 0 # 1
+    dummy_literal = 0 # 1
 
     # rdfs2
     # initial triples: 2

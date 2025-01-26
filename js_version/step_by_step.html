@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entailment Visualization</title>
+    <title>Entailment Visualization Optimized</title>
     <script src="https://unpkg.com/n3/browser/n3.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
@@ -244,18 +244,50 @@
             margin-bottom: 10px;
             text-align: center;
         }
+
+        .rule-panel {
+            position: fixed;
+            top: 20px; /* 20px from the top */
+            right: 20px; /* 20px from the right */
+            max-width: 15%; /* Prevent the panel from becoming too wide */
+            max-height: 30%; /* Prevent the panel from becoming too tall */
+            overflow: auto; /* Add scrollbars if content exceeds the max height */
+            padding: 24px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for a pop-out effect */
+            border-radius: 8px;
+            z-index: 1000; /* Ensure it's above other content */
+        }
+
+        #rulePanelContent {
+            display: flex;
+            flex-direction: column; /* Stack the rows */
+            gap: 10px; /* Add spacing between rows */
+        }
+
+        #rulePanelContent h2 {
+            text-align: left; /* Align <h2> to the left */
+            margin: 0;
+        }
+
+        #rulePanelContent p {
+            text-align: right; /* Align <p> to the right */
+            margin: 0;
+        }
+
     </style>
 </head>
 <body>
 <div class="sidebar">
     <h1>Entailment Visualization</h1>
     <p>Explore how RDF graphs evolve step by step as new facts are inferred — try it now on our web platform!</p>
-    <button id="next-step">Add Edge</button>
+    <button id="next-step">Add New Triple</button>
     <button id="prev-step">Undo</button>
 
     <h2>Select a Turtle (.ttl) file to parse</h2>
     <input type="file" id="fileInput" accept=".ttl"/>
     <button id="entail">Entailment Engine</button>
+    <button id="log">Log</button>
 
     <h2>Choose RDFS Rules</h2>
 
@@ -292,11 +324,24 @@
         12</label></div>
     <div class="rule"><input type="checkbox" name="rules" value="rdfs13" id="rdfs13"> <label for="rdfs13">RDFS
         13</label></div>
+
+    <button id="exportGraph">Export Graph as JSON</button>
 </div>
 
 <div class="zoom-controls">
     <button id="zoom-in">+</button>
     <button id="zoom-out">−</button>
+</div>
+
+<div class="rule-panel" id="rulePanel">
+    <div id="rulePanelContent">
+        <h2>Rule</h2>
+        <p>Applied rule will be shown here</p>
+        <h2>Condition(s)</h2>
+        <p>Triples that triggers said rule</p>
+        <h2>Inferred Triple</h2>
+        <p>New information inferred</p>
+    </div>
 </div>
 
 <!--<div class="modal-overlay active" id="modal-overlay"></div>-->

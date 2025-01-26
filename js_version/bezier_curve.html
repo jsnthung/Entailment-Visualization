@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quadratic Bezier Curve</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        svg {
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>Quadratic Bezier Curve Example</h1>
+<p>This demonstrates a quadratic Bezier curve with start, control, and end points marked.</p>
+
+<svg width="500" height="300" viewBox="0 0 500 300">
+    <!-- Start point -->
+    <circle cx="100" cy="200" r="5" fill="red" />
+    <text x="100" y="215" font-size="12" fill="red">Start (100, 200)</text>
+
+    <!-- Control point -->
+    <circle cx="250" cy="50" r="5" fill="blue" />
+    <text x="250" y="40" font-size="12" fill="blue" text-anchor="middle">Control (250, 50)</text>
+
+    <!-- End point -->
+    <circle cx="400" cy="200" r="5" fill="green" />
+    <text x="400" y="215" font-size="12" fill="green" text-anchor="middle">End (400, 200)</text>
+
+    <!-- Bezier curve -->
+    <path d="M 100 200 Q 250 350 400 200" stroke="black" fill="none" stroke-width="2" />
+
+    <!-- Lines to control point -->
+    <line x1="100" y1="200" x2="250" y2="50" stroke="gray" stroke-dasharray="4" />
+    <line x1="250" y1="50" x2="400" y2="200" stroke="gray" stroke-dasharray="4" />
+</svg>
+</body>
+</html>

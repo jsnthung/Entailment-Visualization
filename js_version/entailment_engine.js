@@ -28,7 +28,7 @@ let inferredTriples = [];
 //     ...
 // ]
 
-let numOfInference = 0;
+// let numOfInference = 10000;
 
 const RDFS = {
     domain: namedNode("http://www.w3.org/2000/01/rdf-schema#domain"),
@@ -60,9 +60,11 @@ function rdfs1() {
                 "object": RDFS.Datatype
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs1", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs1", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs1", condition, inferredTriple);
         }
         if (triple.object.termType === "NamedNode") {
             let condition = [];
@@ -72,9 +74,11 @@ function rdfs1() {
                 "object": RDFS.Datatype
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs1", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs1", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs1", condition, inferredTriple);
         }
     })
 }
@@ -106,9 +110,11 @@ function rdfs2() {
                         "object": domain
                     };
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs2", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs2", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs2", condition, inferredTriple);
                 }
             })
         }
@@ -142,9 +148,11 @@ function rdfs3() {
                         "object": range
                     }
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs3", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs3", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs3", condition, inferredTriple);
                 }
             })
         }
@@ -167,9 +175,11 @@ function rdfs4a() {
             "object": RDFS.Resource
         }
 
-        if (inferredTriples.length < numOfInference) {
-            addNewInferredTriple("rdfs4a", condition, inferredTriple);
-        }
+        // if (inferredTriples.length < numOfInference) {
+        //     addNewInferredTriple("rdfs4a", condition, inferredTriple);
+        // }
+
+        addNewInferredTriple("rdfs4a", condition, inferredTriple);
     })
 }
 
@@ -190,9 +200,11 @@ function rdfs4b() {
         }
 
 
-        if (inferredTriples.length < numOfInference) {
-            addNewInferredTriple("rdfs4b", condition, inferredTriple);
-        }
+        // if (inferredTriples.length < numOfInference) {
+        //     addNewInferredTriple("rdfs4b", condition, inferredTriple);
+        // }
+
+        addNewInferredTriple("rdfs4b", condition, inferredTriple);
     })
 }
 
@@ -226,9 +238,11 @@ function rdfs5() {
                     }
 
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs5", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs5", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs5", condition, inferredTriple);
                 }
             })
         }
@@ -254,9 +268,11 @@ function rdfs6() {
                 "object": subj
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs6", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs6", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs6", condition, inferredTriple);
         }
     })
 }
@@ -291,9 +307,11 @@ function rdfs7() {
                         "object": obj
                     }
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs7", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs7", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs7", condition, inferredTriple);
                 }
             })
         }
@@ -319,9 +337,11 @@ function rdfs8() {
                 "object": RDFS.Resource
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs8", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs8", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs8", condition, inferredTriple);
         }
     })
 }
@@ -355,9 +375,11 @@ function rdfs9() {
                         "object": superclass
                     }
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs9", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs9", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs9", condition, inferredTriple);
                 }
             })
         }
@@ -383,9 +405,11 @@ function rdfs10() {
                 "object": subj
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs10", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs10", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs10", condition, inferredTriple);
         }
     })
 }
@@ -419,9 +443,11 @@ function rdfs11() {
                         "object": obj2
                     }
 
-                    if (inferredTriples.length < numOfInference) {
-                        addNewInferredTriple("rdfs11", condition, inferredTriple);
-                    }
+                    // if (inferredTriples.length < numOfInference) {
+                    //     addNewInferredTriple("rdfs11", condition, inferredTriple);
+                    // }
+
+                    addNewInferredTriple("rdfs11", condition, inferredTriple);
                 }
             })
         }
@@ -447,9 +473,11 @@ function rdfs12() {
                 "object": RDFS.member
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs12", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs12", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs12", condition, inferredTriple);
         }
     })
 }
@@ -473,9 +501,11 @@ function rdfs13() {
                 "object": RDFS.Literal
             }
 
-            if (inferredTriples.length < numOfInference) {
-                addNewInferredTriple("rdfs13", condition, inferredTriple);
-            }
+            // if (inferredTriples.length < numOfInference) {
+            //     addNewInferredTriple("rdfs13", condition, inferredTriple);
+            // }
+
+            addNewInferredTriple("rdfs13", condition, inferredTriple);
         }
     })
 }
@@ -541,7 +571,18 @@ checkboxes.forEach(function (checkbox) {
 });
 
 document.getElementById('entail').addEventListener('click', async () => {
-    selectedRules = ["rdfs1", "rdfs2", "rdfs3", "rdfs4a", "rdfs4b", "rdfs5", "rdfs6", "rdfs7", "rdfs8", "rdfs9", "rdfs10", "rdfs11", "rdfs12", "rdfs13"];
+    // addNewInferredTriple("test", [], {
+    //     subject: namedNode("http://example.org/jasonn"),
+    //     predicate: namedNode("http://example.org/pred1"),
+    //     object: namedNode("http://example.org/thungg")
+    // });
+    // addNewInferredTriple("test", [], {
+    //     subject: namedNode("http://example.org/jiayangg"),
+    //     predicate: namedNode("http://example.org/pred1"),
+    //     object: namedNode("http://example.org/zhouu")
+    // });
+
+    // selectedRules = ["rdfs1", "rdfs2", "rdfs3", "rdfs4a", "rdfs4b", "rdfs5", "rdfs6", "rdfs7", "rdfs8", "rdfs9", "rdfs10", "rdfs11", "rdfs12", "rdfs13"];
 
     document.querySelectorAll('input[name="rules"]:checked').forEach((checkbox) => {
         selectedRules.push(checkbox.value);
