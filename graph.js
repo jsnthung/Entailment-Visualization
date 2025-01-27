@@ -1,10 +1,6 @@
 let triples = [];
 let prefixMap = {}
 
-// TODO: add highlighting for new triple added
-// TODO: create a box to show the rules, condition and inferred triple
-// TODO: if user click on one of the condition, the triple gets highlighted
-
 document.getElementById('fileInput').addEventListener('change', (event) => {
     const file = event.target.files[0];
 
@@ -47,9 +43,10 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 }
             });
 
-            //for debugging
-            console.log('Triples:', triples);
+            // debug
+            // console.log('Triples:', triples);
 
+            // SVG canvas
             const width = window.innerWidth;
             const height = window.innerHeight;
 
@@ -59,16 +56,15 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 .call(d3.zoom().scaleExtent([0.1, 3]).on("zoom", zoomed))
                 .append('g');
 
-            const tooltip = d3.select("body").append("div")
-                .attr("class", "tooltip") // You can define CSS styles for this class
-                .style("position", "absolute")
-                .style("visibility", "hidden")
-                .style("background", "#fff")
-                .style("border", "1px solid #ccc")
-                .style("padding", "5px")
-                .style("border-radius", "5px")
-                .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)");
-
+            // const tooltip = d3.select("body").append("div")
+            //     .attr("class", "tooltip") // You can define CSS styles for this class
+            //     .style("position", "absolute")
+            //     .style("visibility", "hidden")
+            //     .style("background", "#fff")
+            //     .style("border", "1px solid #ccc")
+            //     .style("padding", "5px")
+            //     .style("border-radius", "5px")
+            //     .style("box-shadow", "0 2px 5px rgba(0, 0, 0, 0.2)");
 
             function zoomed(event) {
                 svg.attr("transform", event.transform);
@@ -96,16 +92,11 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
             const labelGroup = svg.append('g').attr('class', 'labels');
             const nodeGroup = svg.append('g').attr('class', 'nodes');
 
-            // const simulation = d3.forceSimulation(nodes)
-            //     .force("link", d3.forceLink(links).id(d => d.id))
-            //     .force("charge", d3.forceManyBody())
-            //     .force("center", d3.forceCenter(width / 2, height / 2))
-            //     .on("tick", ticked);
-
             const simulation = d3.forceSimulation(nodes)
-                .force("link", d3.forceLink(links).id(d => d.id).distance(200).strength(0.7))
-                .force("charge", d3.forceManyBody().strength(-100))
-                .force("center", d3.forceCenter(width / 2, height / 2))
+                .force("link", d3.forceLink(links).id(d => d.id).distance(300).strength(0.7))
+                .force("collide", d3.forceCollide(13))
+                .force("charge", d3.forceManyBody().strength(-300))
+                .force("center", d3.forceCenter(width / 4, height / 4))
                 .velocityDecay(0.6)
                 .on("tick", ticked);
 
@@ -151,6 +142,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 .attr('d', 'M0,-5L-10,0L0,5')   // Reversed path
                 .attr('fill', 'green');
 
+            // Draw links
             let link = linkGroup.selectAll('.link')
                 .data(links)
                 .enter()
@@ -163,8 +155,8 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                     if (d.source.id > d.target.id) {
                         return 'url(#arrowhead-negative)';
                     } else if (d.source.id === d.target.id) {
-                        // return 'url(#arrowhead-reflexive)';
-                        return null;
+                        return 'url(#arrowhead-reflexive)';
+                        // return null;
                     } else {
                         return null;
                     }
@@ -255,11 +247,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 }
             }
 
-
-            console.log(linkDirectionMap)
-            // TODO: Reduce opacity of edgeLabels and markers
-
-            // Helper function to check if two nodes are connected
             const isConnected = (s, t) =>
                 links.some(link =>
                     (link.source.id === s && link.target.id === t) ||
@@ -270,14 +257,17 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 // tooltip.style("visibility", "visible")
                 //     .html(() => `Node: ${qname(d.id, prefixMap)}`);
 
+                // Reduce opacity for some nodes
                 node.transition(500)
                     .style('opacity', o => isConnected(o.id, d.id) ? 1.0 : 0.1);
 
+                // Reduce opacity for some links
                 link.transition(500)
                     .style('stroke-opacity', o =>
                         o.source.id === d.id || o.target.id === d.id ? 1.0 : 0.1
                     );
 
+                // Reduce opacity for some edgeLabels
                 edgeLabels.transition(500)
                     .style('opacity', o => o.source.id === d.id || o.target.id === d.id ? 1.0 : 0.1);
             }
@@ -292,6 +282,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 link.transition(500)
                     .style('stroke-opacity', 1.0);
 
+                // Reset opacity for all edgeLabels
                 edgeLabels.transition(500)
                     .style('opacity', 1.0);
             }
@@ -316,7 +307,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                     });
             }
 
-            // Helper to calculate the midpoint of a link
+            // Set edgeLabels in the center
             function getMidPoint(d) {
                 return {
                     x: (d.source.x + d.target.x) / 2,
@@ -324,7 +315,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 };
             }
 
-            // Helper to calculate vertical offset for labels based on the number of edges
+            // Offset for edgeLabels
             function getOffset(d) {
                 let sourceNode = d.source;
                 let targetNode = d.target;
@@ -380,7 +371,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 }
             }
 
-            // Helper to calculate label rotation angle
+            // Adjust angle of edgeLabels
             function getLabelRotation(d) {
                 const dx = d.target.x - d.source.x;
                 const dy = d.target.y - d.source.y;
@@ -397,6 +388,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 return angle;
             }
 
+            // Calculate path of multiple edges and reflexive edges
             function computePath(d) {
                 let sourceNode;
                 let targetNode;
@@ -452,6 +444,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 return `M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}`
             }
 
+            // Variables for iterating through each steps
             let curStep = 0;
             let tripleSource;
             let tripleTarget;
@@ -528,7 +521,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 console.log(`${qname(sourceId, prefixMap)} - ${qname(predId, prefixMap)} - ${qname(targetId, prefixMap)} by ${rule}`);
             }
 
-            // Add the Add Edge button functionality
             document.getElementById("next-step").addEventListener("click", () => {
                 if (curStep === inferredTriples.length) {
                     console.log("Graph is fully entailed");
@@ -611,7 +603,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 }
             }
 
-
             document.getElementById("prev-step").addEventListener("click", () => {
                 if (curStep === 0) {
                     console.log("This is the initial graph")
@@ -628,9 +619,8 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 updateRulePanelContentRemove(edgeToRemove.sourceId, edgeToRemove.targetId, edgeToRemove.predicate);
             });
 
-// Function to update the graph
+            // Function to update the graph
             function updateGraph() {
-                // Update the links
                 link = linkGroup.selectAll('.link')
                     .data(links, d => `${d.source}-${d.target}-${d.predicate}`);
 
@@ -642,8 +632,8 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                         if (d.source.id > d.target.id) {
                             return 'url(#arrowhead-negative)';
                         } else if (d.source.id === d.target.id) {
-                            // return 'url(#arrowhead-reflexive)';
-                            return null;
+                            return 'url(#arrowhead-reflexive)';
+                            // return null;
                         } else {
                             return null;
                         }
@@ -652,7 +642,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 link.exit().remove();
                 link = newLink.merge(link);
 
-                // Update the edge labels
                 edgeLabels = labelGroup.selectAll('.edge-label-group')
                     .data(links, d => `${d.source}-${d.target}-${d.predicate}`);
 
@@ -667,7 +656,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 edgeLabels.exit().remove();
                 edgeLabels = newLabelGroup.merge(edgeLabels);
 
-                // Ensure `d.source` and `d.target` are objects before calculating `dy`
                 edgeLabels.selectAll('text')
                     .attr('dy', d => {
                         const sourceId = typeof d.source === 'object' ? d.source.id : d.source;
@@ -676,7 +664,6 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                     })
                     .text(d => qname(d.predicate, prefixMap));
 
-                // Update the nodes
                 node = nodeGroup.selectAll('.node')
                     .data(nodes, d => d.id);
 
@@ -706,7 +693,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 simulation.alpha(1).restart();
             }
 
-
+            // Drag functionality
             function dragStarted(event, d) {
                 if (!event.active) simulation.alphaTarget(0.3).restart();
                 d.fx = d.x;
@@ -724,10 +711,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 d.fy = null;
             }
 
-            document.getElementById("log").addEventListener("click", () => {
-
-            });
-
+            // Highlighting current step
             function updateRulePanelContentAdd(rule, conditions, inferredTriple) {
                 const rulePanelContent = document.getElementById('rulePanelContent');
 

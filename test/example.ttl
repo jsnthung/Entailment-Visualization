@@ -7,7 +7,5 @@
 @prefix job: <http://example.org/job#> .
 
 # overlapping edge A <- B and B -> A
-ex:sub1 ex:pred1 ex:obj1 .
-ex:obj1 ex:pred2 ex:sub1 .
-ex:sub1 ex:pred3 ex:obj1 .
-ex:obj1 ex:pred4 ex:sub1 .
+ex:sub1 ex:pred1 ex:sub1 .
+ex:sub1 ex:pred2 ex:sub1 .
