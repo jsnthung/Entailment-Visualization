@@ -134,13 +134,13 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 .attr('id', 'arrowhead-reflexive')
                 .attr('viewBox', '-10 -5 10 10')
                 .attr('refX', -31)
-                .attr('refY', 1.7)
+                .attr('refY', 2.5)
                 .attr('markerWidth', 6)
                 .attr('markerHeight', 6)
                 .attr('orient', 'auto')
                 .append('path')
                 .attr('d', 'M0,-5L-10,0L0,5')   // Reversed path
-                .attr('fill', 'green');
+                .attr('fill', '#3c3c3e');
 
             // Draw links
             let link = linkGroup.selectAll('.link')
