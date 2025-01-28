@@ -703,37 +703,42 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
 
             // Highlighting
             function highlightTriple() {
+                // Helper function to apply highlight styling
+                function applyHighlight(triples, nodeStyle, linkStyle) {
+                    triples.forEach(triple => {
+                        // const relatedNodes = node.filter(d => d.id === triple.subject.id || d.id === triple.object.id);
+                        const relatedLink = link.filter(d =>
+                            d.source.id === triple.subject.id &&
+                            d.predicate === triple.predicate.id &&
+                            d.target.id === triple.object.id);
+
+                        // relatedNodes
+                        //     .transition(500)
+                        //     .select('circle')
+                        //     .style('fill', nodeStyle.fill);
+                        relatedLink
+                            .transition(500)
+                            .style('stroke', linkStyle.stroke)
+                            .style('stroke-width', linkStyle.strokeWidth);
+                    });
+                }
+
+                // Highlight new inference
                 const highlightedTriple = inferredTriples[curStep - 1].inferred;
+                applyHighlight([highlightedTriple], { fill: 'red' }, { stroke: 'red', strokeWidth: '3px' });
 
-                const highlightedNodes = node.filter(d => d.id === highlightedTriple.subject.id || d.id === highlightedTriple.object.id);
+                // Highlight conditions
+                const conditionTriples = inferredTriples[curStep - 1].condition;
+                applyHighlight(conditionTriples, { fill: 'green' }, { stroke: 'green', strokeWidth: '3px' });
 
-                // TODO: highlighting link still not working
-
-                const highlightedLink = link.filter(d =>
-                    d.source.id === highlightedTriple.subject.id &&
-                    d.predicate === highlightedTriple.predicate.id &&
-                    d.target.id === highlightedTriple.object.id);
-
-                // console.log(highlightedTriple.subject.id)
-                // console.log(highlightedTriple.predicate.id)
-                // console.log(highlightedTriple.object.id)
-
-                highlightedNodes
-                    .select('circle')
-                    .style('fill', 'red')
-
-                highlightedLink
-                    .style('stroke', 'red')
-                    .style('stroke-width', '3px')
-
+                // Restore styling after timeout
                 setTimeout(() => {
-                    highlightedNodes.select('circle')
-                        .style('fill', '#1f3a93');
-
-                    highlightedLink.style('stroke', '#1f3a93')
-                        .style('stroke-width', '2px');
-                }, 2000);
+                    const defaultStyle = { fill: '#1f3a93', stroke: '#1f3a93', strokeWidth: '2px' };
+                    applyHighlight([highlightedTriple], defaultStyle, defaultStyle);
+                    applyHighlight(conditionTriples, defaultStyle, defaultStyle);
+                }, 3500);
             }
+
 
             // Drag functionality
             function dragStarted(event, d) {
