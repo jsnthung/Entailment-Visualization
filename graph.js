@@ -517,6 +517,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
 
                 // Restart the simulation and re-render
                 updateGraph();
+                highlightTriple();
                 console.log("Added edge:");
                 console.log(`${qname(sourceId, prefixMap)} - ${qname(predId, prefixMap)} - ${qname(targetId, prefixMap)} by ${rule}`);
             }
@@ -621,6 +622,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
 
             // Function to update the graph
             function updateGraph() {
+                // Update links
                 link = linkGroup.selectAll('.link')
                     .data(links, d => `${d.source}-${d.target}-${d.predicate}`);
 
@@ -633,15 +635,15 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                             return 'url(#arrowhead-negative)';
                         } else if (d.source.id === d.target.id) {
                             return 'url(#arrowhead-reflexive)';
-                            // return null;
                         } else {
                             return null;
                         }
-                    })
+                    });
 
                 link.exit().remove();
                 link = newLink.merge(link);
 
+                // Update edge labels
                 edgeLabels = labelGroup.selectAll('.edge-label-group')
                     .data(links, d => `${d.source}-${d.target}-${d.predicate}`);
 
@@ -664,6 +666,7 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                     })
                     .text(d => qname(d.predicate, prefixMap));
 
+                // Update nodes
                 node = nodeGroup.selectAll('.node')
                     .data(nodes, d => d.id);
 
@@ -687,10 +690,49 @@ document.getElementById('fileInput').addEventListener('change', (event) => {
                 node.exit().remove();
                 node = newNode.merge(node);
 
+                // Reapply event listeners
+                node.on('mouseover', mouseOverFunction)
+                    .on('mouseout', mouseOutFunction);
+
                 // Restart simulation
                 simulation.nodes(nodes);
                 simulation.force("link").links(links);
                 simulation.alpha(1).restart();
+            }
+
+
+            // Highlighting
+            function highlightTriple() {
+                const highlightedTriple = inferredTriples[curStep - 1].inferred;
+
+                const highlightedNodes = node.filter(d => d.id === highlightedTriple.subject.id || d.id === highlightedTriple.object.id);
+
+                // TODO: highlighting link still not working
+
+                const highlightedLink = link.filter(d =>
+                    d.source.id === highlightedTriple.subject.id &&
+                    d.predicate === highlightedTriple.predicate.id &&
+                    d.target.id === highlightedTriple.object.id);
+
+                // console.log(highlightedTriple.subject.id)
+                // console.log(highlightedTriple.predicate.id)
+                // console.log(highlightedTriple.object.id)
+
+                highlightedNodes
+                    .select('circle')
+                    .style('fill', 'red')
+
+                highlightedLink
+                    .style('stroke', 'red')
+                    .style('stroke-width', '3px')
+
+                setTimeout(() => {
+                    highlightedNodes.select('circle')
+                        .style('fill', '#1f3a93');
+
+                    highlightedLink.style('stroke', '#1f3a93')
+                        .style('stroke-width', '2px');
+                }, 2000);
             }
 
             // Drag functionality
